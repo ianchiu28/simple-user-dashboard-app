@@ -4,6 +4,14 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
+// load environment variables
+const dotenv = require('dotenv');
+dotenv.config();
+
+// connect to database and check the connection
+const sequelize = require('./services/sequelize');
+sequelize.authenticate();
+
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 
