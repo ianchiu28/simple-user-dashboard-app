@@ -3,7 +3,7 @@ const {Sequelize, DataTypes} = require('sequelize');
 /**
  * Sequelize database object
  */
-exports.sequelize = new Sequelize(process.env.DB_URL, {
+const sequelize = new Sequelize(process.env.DB_URL, {
   dialectOptions: {
     ssl: {
       require: true,
@@ -11,6 +11,7 @@ exports.sequelize = new Sequelize(process.env.DB_URL, {
     },
   },
 });
+exports.sequelize = sequelize;
 
 /**
  * User Model
