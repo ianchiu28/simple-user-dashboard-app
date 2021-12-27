@@ -10,7 +10,7 @@ const sequelize = new Sequelize(process.env.DB_URL, {
 });
 
 /**
- * test connection function
+ * Test the connection of postgreSQL.
  */
 async function authenticate() {
   try {
