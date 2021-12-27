@@ -1,4 +1,4 @@
-const {Sequelize} = require('sequelize');
+const {Sequelize, DataTypes} = require('sequelize');
 
 /**
  * Sequelize database object
@@ -11,3 +11,8 @@ exports.sequelize = new Sequelize(process.env.DB_URL, {
     },
   },
 });
+
+/**
+ * User Model
+ */
+exports.users = require('./user')(sequelize, DataTypes);
