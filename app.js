@@ -8,9 +8,9 @@ const logger = require('morgan');
 const dotenv = require('dotenv');
 dotenv.config();
 
-// connect to database and check the connection
-const sequelize = require('./services/sequelize');
-sequelize.authenticate();
+// connect to database
+const {sequelize} = require('./models');
+sequelize.sync();
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
