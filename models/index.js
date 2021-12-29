@@ -16,4 +16,4 @@ exports.sequelize = sequelize;
 /**
  * User Model
  */
-exports.users = require('./user')(sequelize, DataTypes);
+exports.User = require('./user')(sequelize, DataTypes);
