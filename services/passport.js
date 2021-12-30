@@ -62,4 +62,23 @@ module.exports = (passport) => {
         })
         .catch((err) => done(err));
   }));
+
+  /**
+   * Serialize user.
+   * Only pass id into session.
+   */
+  passport.serializeUser((user, done) => {
+    done(null, user.id);
+  });
+
+  /**
+   * Deserialize user.
+   * Find user by primary key(id)
+   */
+  passport.deserializeUser((id, done) => {
+    User
+        .findByPk(id)
+        .then((user) => done(null, user))
+        .catch((err) => done(err));
+  });
 };

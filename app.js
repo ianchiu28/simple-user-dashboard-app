@@ -4,6 +4,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const passport = require('passport');
+const session = require('express-session');
 
 // load environment variables
 const dotenv = require('dotenv');
@@ -29,8 +30,13 @@ app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({
+  secret: process.env.SESSION_KEY,
+  resave: false,
+  saveUninitialized: false,
+}));
 app.use(passport.initialize());
-// app.use(passport.session());
+app.use(passport.session());
 
 app.use('/', indexRouter);
 
