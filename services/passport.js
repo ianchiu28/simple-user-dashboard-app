@@ -12,13 +12,16 @@ module.exports = (passport) => {
     usernameField: 'emailAddress',
     passwordField: 'password',
   }, (emailAddress, password, done) => {
+    // check if email address existed
     User
         .findOne({where: {emailAddress}})
         .then((user)=>{
+          // existed
           if (user) {
             return done(null, false, {message: 'EmailAddressTaken'});
           }
 
+          // not existed, create a new one
           User
               .create({
                 emailAddress,
@@ -27,9 +30,7 @@ module.exports = (passport) => {
                 signUpTimestamp: new Date().toISOString(),
                 loginTimes: 0,
               })
-              .then((user) => {
-                return done(null, user);
-              })
+              .then((user) => done(null, user))
               .catch((err) => done(err));
         })
         .catch((err) => done(err));
