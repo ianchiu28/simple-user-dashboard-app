@@ -5,8 +5,8 @@ const {User} = require('../models');
 
 module.exports = (passport) => {
   /**
-   * Local login strategy.
-   * Authenticate with username and password.
+   * Local sign up strategy.
+   * Create a new user.
    */
   passport.use('local-signup', new LocalStrategy({
     usernameField: 'emailAddress',
