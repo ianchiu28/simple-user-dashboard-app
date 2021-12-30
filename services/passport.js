@@ -54,7 +54,7 @@ module.exports = (passport) => {
           }
 
           // invalid password
-          if (bcrypt.compareSync(password, user.password)) {
+          if (!bcrypt.compareSync(password, user.password)) {
             return done(null, false, {message: 'InvalidPassword'});
           }
 
