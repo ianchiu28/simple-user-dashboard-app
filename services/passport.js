@@ -1,4 +1,5 @@
 const LocalStrategy = require('passport-local').Strategy;
+const bcrypt = require('bcrypt');
 
 const {User} = require('../models');
 
@@ -21,7 +22,7 @@ module.exports = (passport) => {
           User
               .create({
                 emailAddress,
-                password,
+                password: bcrypt.hashSync(password, 10),
                 username: emailAddress,
                 signUpTimestamp: new Date().toISOString(),
                 loginTimes: 0,
