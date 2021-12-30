@@ -1,5 +1,4 @@
 const LocalStrategy = require('passport-local').Strategy;
-const bcrypt = require('bcrypt');
 
 const {User} = require('../models');
 
@@ -25,7 +24,7 @@ module.exports = (passport) => {
           User
               .create({
                 emailAddress,
-                password: bcrypt.hashSync(password, 10),
+                password: User.hashPassword(password),
                 username: emailAddress,
                 signUpTimestamp: new Date().toISOString(),
                 loginTimes: 0,
@@ -54,7 +53,7 @@ module.exports = (passport) => {
           }
 
           // invalid password
-          if (!bcrypt.compareSync(password, user.password)) {
+          if (!User.comparePassword(password, user.password)) {
             return done(null, false, {message: 'InvalidPassword'});
           }
 
