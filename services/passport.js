@@ -1,4 +1,5 @@
 const LocalStrategy = require('passport-local').Strategy;
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 const {User} = require('../models');
 
@@ -58,6 +59,41 @@ module.exports = (passport) => {
           }
 
           return done(null, user);
+        })
+        .catch((err) => done(err));
+  }));
+
+  /**
+   * Google login strategy.
+   * Authenticate with Google OAuth2.0.
+   */
+  passport.use(new GoogleStrategy({
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: process.env.GOOGLE_CALLBACK_URL,
+  }, (accessToken, refreshToken, profile, done) => {
+    const emailAddress = profile.emails[0].value;
+    const username = profile.displayName;
+
+    // check if email address existed
+    User
+        .findOne({where: {emailAddress}})
+        .then((user)=>{
+          // existed, login
+          if (user) {
+            return done(null, user);
+          }
+
+          // not existed, create a new one
+          User
+              .create({
+                emailAddress,
+                username,
+                signUpTimestamp: new Date().toISOString(),
+                loginTimes: 0,
+              })
+              .then((user) => done(null, user))
+              .catch((err) => done(err));
         })
         .catch((err) => done(err));
   }));
