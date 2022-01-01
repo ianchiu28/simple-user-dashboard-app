@@ -9,7 +9,7 @@ module.exports = (passport) => {
    * Local sign up strategy.
    * Create a new user.
    */
-  passport.use('local-signup', new LocalStrategy({
+  passport.use('local-signUp', new LocalStrategy({
     usernameField: 'emailAddress',
     passwordField: 'password',
   }, (emailAddress, password, done) => {
@@ -44,7 +44,7 @@ module.exports = (passport) => {
    * Local login strategy.
    * Authenticate with email address and password.
    */
-  passport.use('local-login', new LocalStrategy({
+  passport.use('local-logIn', new LocalStrategy({
     usernameField: 'emailAddress',
     passwordField: 'password',
   }, (emailAddress, password, done) => {
