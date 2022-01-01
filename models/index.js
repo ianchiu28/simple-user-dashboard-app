@@ -3,7 +3,7 @@ const {Sequelize, DataTypes} = require('sequelize');
 /**
  * Sequelize database object
  */
-const sequelize = new Sequelize(process.env.DB_URL, {
+const sequelize = new Sequelize(process.env.DATABASE_URL, {
   dialectOptions: {
     ssl: {
       require: true,
