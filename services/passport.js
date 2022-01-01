@@ -13,9 +13,11 @@ module.exports = (passport) => {
     usernameField: 'emailAddress',
     passwordField: 'password',
   }, (emailAddress, password, done) => {
+    const providerId = emailAddress;
+
     // check if email address existed
     User
-        .findOne({where: {emailAddress}})
+        .findOne({where: {providerId}})
         .then((user)=>{
           // existed
           if (user) {
@@ -25,9 +27,10 @@ module.exports = (passport) => {
           // not existed, create a new one
           User
               .create({
+                providerId: emailAddress,
+                provider: 'local',
                 emailAddress,
                 password: User.hashPassword(password),
-                username: emailAddress,
                 signUpTimestamp: new Date().toISOString(),
                 loginTimes: 0,
               })
@@ -45,9 +48,11 @@ module.exports = (passport) => {
     usernameField: 'emailAddress',
     passwordField: 'password',
   }, (emailAddress, password, done) => {
+    const providerId = emailAddress;
+
     // check if email address existed
     User
-        .findOne({where: {emailAddress}})
+        .findOne({where: {providerId}})
         .then((user)=>{
           // not existed
           if (!user) {
@@ -73,12 +78,13 @@ module.exports = (passport) => {
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     callbackURL: process.env.GOOGLE_CALLBACK_URL,
   }, (accessToken, refreshToken, profile, done) => {
-    const emailAddress = profile.emails[0].value;
+    const providerId = profile.id;
+    const emailAddress = profile.emails ? profile.emails[0].value : undefined;
     const username = profile.displayName;
 
     // check if email address existed
     User
-        .findOne({where: {emailAddress}})
+        .findOne({where: {providerId}})
         .then((user)=>{
           // existed, login
           if (user) {
@@ -88,6 +94,8 @@ module.exports = (passport) => {
           // not existed, create a new one
           User
               .create({
+                providerId,
+                provider: 'google',
                 emailAddress,
                 username,
                 signUpTimestamp: new Date().toISOString(),
@@ -109,12 +117,13 @@ module.exports = (passport) => {
     callbackURL: process.env.FACEBOOK_CALLBACK_URL,
     profileFields: ['email', 'displayName'],
   }, (accessToken, refreshToken, profile, done) => {
-    const emailAddress = profile.emails[0].value;
+    const providerId = profile.id;
+    const emailAddress = profile.emails ? profile.emails[0].value : undefined;
     const username = profile.displayName;
 
     // check if email address existed
     User
-        .findOne({where: {emailAddress}})
+        .findOne({where: {providerId}})
         .then((user)=>{
           // existed, login
           if (user) {
@@ -124,6 +133,8 @@ module.exports = (passport) => {
           // not existed, create a new one
           User
               .create({
+                providerId,
+                provider: 'facebook',
                 emailAddress,
                 username,
                 signUpTimestamp: new Date().toISOString(),
@@ -137,19 +148,19 @@ module.exports = (passport) => {
 
   /**
    * Serialize user.
-   * Only pass id into session.
+   * Only pass primary key(providerId) into session.
    */
   passport.serializeUser((user, done) => {
-    done(null, user.id);
+    done(null, user.providerId);
   });
 
   /**
    * Deserialize user.
-   * Find user by primary key(id)
+   * Find user by primary key(providerId)
    */
-  passport.deserializeUser((id, done) => {
+  passport.deserializeUser((providerId, done) => {
     User
-        .findByPk(id)
+        .findByPk(providerId)
         .then((user) => done(null, user))
         .catch((err) => done(err));
   });
