@@ -77,6 +77,7 @@ module.exports = (passport) => {
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     callbackURL: process.env.GOOGLE_CALLBACK_URL,
+    proxy: true,
   }, (accessToken, refreshToken, profile, done) => {
     const providerId = profile.id;
     const emailAddress = profile.emails ? profile.emails[0].value : undefined;
