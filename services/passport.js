@@ -1,5 +1,6 @@
 const LocalStrategy = require('passport-local').Strategy;
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const FacebookStrategy = require('passport-facebook').Strategy;
 
 const {User} = require('../models');
 
@@ -71,6 +72,42 @@ module.exports = (passport) => {
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     callbackURL: process.env.GOOGLE_CALLBACK_URL,
+  }, (accessToken, refreshToken, profile, done) => {
+    const emailAddress = profile.emails[0].value;
+    const username = profile.displayName;
+
+    // check if email address existed
+    User
+        .findOne({where: {emailAddress}})
+        .then((user)=>{
+          // existed, login
+          if (user) {
+            return done(null, user);
+          }
+
+          // not existed, create a new one
+          User
+              .create({
+                emailAddress,
+                username,
+                signUpTimestamp: new Date().toISOString(),
+                loginTimes: 0,
+              })
+              .then((user) => done(null, user))
+              .catch((err) => done(err));
+        })
+        .catch((err) => done(err));
+  }));
+
+  /**
+   * Facebook login strategy.
+   * Authenticate with Facebook OAuth2.0.
+   */
+  passport.use(new FacebookStrategy({
+    clientID: process.env.FACEBOOK_CLIENT_ID,
+    clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
+    callbackURL: process.env.FACEBOOK_CALLBACK_URL,
+    profileFields: ['email', 'displayName'],
   }, (accessToken, refreshToken, profile, done) => {
     const emailAddress = profile.emails[0].value;
     const username = profile.displayName;
