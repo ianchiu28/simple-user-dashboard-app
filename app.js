@@ -41,6 +41,7 @@ app.use(passport.session());
 app.use('/', indexRouter);
 
 // routes
+require('./routes/auth')(app, passport);
 require('./routes/users')(app, passport);
 
 // catch 404 and forward to error handler

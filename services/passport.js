@@ -44,7 +44,7 @@ module.exports = (passport) => {
    * Local login strategy.
    * Authenticate with email address and password.
    */
-  passport.use('local-logIn', new LocalStrategy({
+  passport.use('local', new LocalStrategy({
     usernameField: 'emailAddress',
     passwordField: 'password',
   }, (emailAddress, password, done) => {
