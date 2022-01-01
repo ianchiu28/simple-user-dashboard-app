@@ -10,7 +10,7 @@ module.exports = (router, passport) => {
   router.post(
       '/api/users/logIn',
       passport.authenticate('local-logIn'),
-      userController.login,
+      userController.logIn,
   );
 
   router.get('/auth/google', passport.authenticate('google', {
