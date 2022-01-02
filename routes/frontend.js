@@ -1,5 +1,5 @@
 module.exports = (router) => {
-  router.get('/', function(req, res) {
+  router.get('/', (req, res) => {
     if (req.isAuthenticated()) {
       res.redirect('/dashboard');
     } else {
