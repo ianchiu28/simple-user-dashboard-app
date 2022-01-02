@@ -18,6 +18,47 @@ function toggleSignUp(e) {
   $('#logreg-forms .form-signup').toggle();
 }
 
+/**
+ * Validate password by reg exp
+ * @param {string} password
+ * @return {boolean} valid password or not
+ */
+function validatePasswordRegexp(password) {
+  const reg = new RegExp([
+    '^(?=.*\\d)',
+    '(?=.*[a-z])',
+    '(?=.*[A-Z])',
+    '(?=.*[!"#$%&\'()*+,\\-.\\/:;<=>?@[\\\\\\]^_`{|}~])',
+    '.{8,}$',
+  ].join(''));
+  return reg.test(password);
+}
+
+/**
+ * Toggle password error message
+ */
+function togglePasswordError() {
+  const password = $('#password').val();
+  if (validatePasswordRegexp(password)) {
+    $('#passwordError').hide();
+  } else {
+    $('#passwordError').show();
+  }
+}
+
+/**
+ * Toggle confirm password error message
+ */
+function toggleConfirmPasswordError() {
+  const password = $('#password').val();
+  const confirmPassword = $('#confirmPassword').val();
+  if (password === confirmPassword) {
+    $('#confirmPasswordError').hide();
+  } else {
+    $('#confirmPasswordError').show();
+  }
+}
+
 $(()=>{
   // toggle reset password page
   $('#logreg-forms #forgot_pswd').click(toggleResetPswd);
@@ -39,23 +80,43 @@ $(()=>{
     return false;
   });
 
+  // sign up error message initialize
+  $('#passwordError').hide();
+  $('#confirmPasswordError').hide();
+  $('#signUpError').hide();
+  $('#password').on('input', togglePasswordError);
+  $('#password').on('input', toggleConfirmPasswordError);
+  $('#confirmPassword').on('input', toggleConfirmPasswordError);
+
   // sign up event
   $('.form-signup').submit((e) => {
-    alert('hey');
+    // avoid to execute the actual submit of the form
+    e.preventDefault();
 
     const emailAddress = $('#emailAddress').val();
     const username = $('#username').val();
     const password = $('#password').val();
-    const repeatPassword = $('#repeatPassword').val();
+    const confirmPassword = $('#confirmPassword').val();
 
+    // validate password
+    if (!validatePasswordRegexp(password)) {
+      return;
+    }
+
+    // password and confirm password do not match
+    if (password !== confirmPassword) {
+      return;
+    }
+
+    // call sign up API
     $.post('/api/users/' + emailAddress, {
       username,
       password,
-    }).done((data) => {
-      console.log('done');
-      console.log(data);
+    }).done(() => {
+      // success, redirect to dashboard page
       window.location.href = '/dashboard';
     }).fail((jqXHR) => {
+      // fail or error, show error message
       const data = jqXHR.responseJSON;
       if (data.status === 'fail') {
         if (data.data.emailAddress === 'EmailAddressTaken') {
@@ -64,10 +125,7 @@ $(()=>{
       } else {
         $('#signUpError').text(data.message);
       }
-      $('#signUpError').removeClass('d-none');
+      $('#signUpError').show();
     });
-
-    // avoid to execute the actual submit of the form
-    e.preventDefault();
   });
 });

@@ -56,8 +56,21 @@ head
     input#emailAddress.form-control(type='email' placeholder='Email address' required='' autofocus='')
     input#username.form-control(type='text' placeholder='User name' required='' autofocus='')
     input#password.form-control(type='password' placeholder='Password' required='' autofocus='')
-    input#repeatPassword.form-control(type='password' placeholder='Repeat Password' required='' autofocus='')
-    p#signUpError.alert.alert-danger.text-center.mt-1.d-none
+    p#passwordError.alert.alert-danger.mt-1.small
+      |  Password must contain all of the following requirements:
+      br
+      |  * Contains at least one lower character.
+      br
+      |  * Contains at least one upper character.
+      br
+      |  * Contains at least one digit character.
+      br
+      |  * Contains at least one special character.
+      br
+      |  * Contains at least 8 characters.
+    input#confirmPassword.form-control(type='password' placeholder='Confirm Password' required='' autofocus='')
+    p#confirmPasswordError.alert.alert-danger.mt-1.small  Password and Confirm Password must be match.
+    p#signUpError.alert.alert-danger.mt-1.small
     button.btn.btn-primary.btn-block(type='submit')
       i.fas.fa-user-plus
       |  Sign Up
