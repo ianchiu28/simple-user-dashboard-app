@@ -47,21 +47,24 @@ module.exports = (passport) => {
   passport.use('local', new LocalStrategy({
     usernameField: 'emailAddress',
     passwordField: 'password',
-  }, (emailAddress, password, done) => {
+    passReqToCallback: true,
+  }, (req, emailAddress, password, done) => {
     const providerId = emailAddress;
 
     // check if email address existed
     User
         .findOne({where: {providerId}})
         .then((user)=>{
+          const invalidMessage = 'Invalid email or password';
+
           // not existed
           if (!user) {
-            return done(null, false, {message: 'InvalidEmailAddress'});
+            return done(null, false, req.flash('message', invalidMessage));
           }
 
           // invalid password
           if (!User.comparePassword(password, user.password)) {
-            return done(null, false, {message: 'InvalidPassword'});
+            return done(null, false, req.flash('message', invalidMessage));
           }
 
           return done(null, user);

@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const passport = require('passport');
 const session = require('express-session');
+const flash = require('connect-flash');
 
 // load environment variables
 const dotenv = require('dotenv');
@@ -16,8 +17,6 @@ sequelize.sync();
 
 // passport strategies setup
 require('./services/passport')(passport);
-
-const indexRouter = require('./routes/index');
 
 const app = express();
 
@@ -37,10 +36,10 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-
-app.use('/', indexRouter);
+app.use(flash());
 
 // routes
+require('./routes/frontend')(app);
 require('./routes/auth')(app, passport);
 require('./routes/users')(app, passport);
 

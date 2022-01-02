@@ -22,6 +22,8 @@ head
     p(style='text-align:center')  OR
     input#inputEmail.form-control(name='emailAddress' type='email' placeholder='Email address' required='' autofocus='')
     input#inputPassword.form-control(name='password' type='password' placeholder='Password' required='')
+    if (message.length > 0)
+      .alert.alert-danger.text-center.mt-1 #{message}
     button.btn.btn-success.btn-block(type='submit')
       i.fas.fa-sign-in-alt
       |  Sign in
