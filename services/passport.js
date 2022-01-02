@@ -6,41 +6,6 @@ const {User} = require('../models');
 
 module.exports = (passport) => {
   /**
-   * Local sign up strategy.
-   * Create a new user.
-   */
-  passport.use('local-signUp', new LocalStrategy({
-    usernameField: 'emailAddress',
-    passwordField: 'password',
-  }, (emailAddress, password, done) => {
-    const providerId = emailAddress;
-
-    // check if email address existed
-    User
-        .findOne({where: {providerId}})
-        .then((user)=>{
-          // existed
-          if (user) {
-            return done(null, false, {message: 'EmailAddressTaken'});
-          }
-
-          // not existed, create a new one
-          User
-              .create({
-                providerId: emailAddress,
-                provider: 'local',
-                emailAddress,
-                password: User.hashPassword(password),
-                signUpTimestamp: new Date().toISOString(),
-                loginTimes: 0,
-              })
-              .then((user) => done(null, user))
-              .catch((err) => done(err));
-        })
-        .catch((err) => done(err));
-  }));
-
-  /**
    * Local login strategy.
    * Authenticate with email address and password.
    */
