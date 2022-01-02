@@ -1,8 +1,40 @@
 const {User} = require('../models');
+const userService = require('../services/users');
 
 exports.signUp = async (req, res) => {
   const {emailAddress} = req.params;
   const {password, username} = req.body;
+
+  // sanitize input
+  if (!userService.validateEmail(emailAddress)) {
+    res.status(400).json({
+      status: 'fail',
+      data: {
+        emailAddress: 'Invalid',
+      },
+    });
+    return;
+  }
+
+  if (!userService.validatePassword(password)) {
+    res.status(400).json({
+      status: 'fail',
+      data: {
+        password: 'Invalid',
+      },
+    });
+    return;
+  }
+
+  if (!userService.validateUsername(username)) {
+    res.status(400).json({
+      status: 'fail',
+      data: {
+        username: 'Invalid',
+      },
+    });
+    return;
+  }
 
   // check if email address existed
   let user;
