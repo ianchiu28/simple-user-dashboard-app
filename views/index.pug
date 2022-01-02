@@ -11,11 +11,11 @@ head
   form.form-signin
     h1.h3.mb-3.font-weight-normal(style='text-align: center')  Sign in
     .social-login
-      button.btn.facebook-btn.social-btn(onClick='window.location.href="/auth/facebook"')
+      button.btn.facebook-btn.social-btn(type='button' formnovalidate='')
         span
           i.fab.fa-facebook-f
           |  Sign in with Facebook
-      button.btn.google-btn.social-btn(onClick='window.location.href=/auth/google')
+      button.btn.google-btn.social-btn(type='button' formnovalidate='')
         span
           i.fab.fa-google-plus-g
           |  Sign in with Google
@@ -42,11 +42,11 @@ head
   form.form-signup(action='/signup/')
     h1.h3.mb-3.font-weight-normal(style='text-align: center')  Sign up
     .social-login
-      button.btn.facebook-btn.social-btn(href='/auth/facebook')
+      button.btn.facebook-btn.social-btn(type='button' formnovalidate='')
         span
           i.fab.fa-facebook-f
           |  Sign up with Facebook
-      button.btn.google-btn.social-btn(href='/auth/google')
+      button.btn.google-btn.social-btn(type='button' formnovalidate='')
         span
           i.fab.fa-google-plus-g
           |  Sign up with Google

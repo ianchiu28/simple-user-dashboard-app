@@ -19,9 +19,23 @@ function toggleSignUp(e) {
 }
 
 $(()=>{
-  // Sign in page event registeration
+  // toggle reset password page
   $('#logreg-forms #forgot_pswd').click(toggleResetPswd);
   $('#logreg-forms #cancel_reset').click(toggleResetPswd);
+
+  // toggle sign up page
   $('#logreg-forms #btn-signup').click(toggleSignUp);
   $('#logreg-forms #cancel_signup').click(toggleSignUp);
+
+  // facebook auth
+  $('.facebook-btn').click(() => {
+    window.location.href = '/auth/facebook';
+    return false;
+  });
+
+  // google auth
+  $('.google-btn').click(() => {
+    window.location.href = '/auth/google';
+    return false;
+  });
 });
