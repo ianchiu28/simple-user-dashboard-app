@@ -41,7 +41,7 @@ head
   //-     i.fas.fa-angle-left
   //-     |  Back
 
-  form.form-signup(action='/signup/')
+  form.form-signup
     h1.h3.mb-3.font-weight-normal(style='text-align: center')  Sign up
     .social-login
       button.btn.facebook-btn.social-btn(type='button' formnovalidate='')
@@ -53,21 +53,17 @@ head
           i.fab.fa-google-plus-g
           |  Sign up with Google
     p(style='text-align:center') OR
-    input#user-name.form-control(type='text' placeholder='Full name' required='' autofocus='')
-    input#user-email.form-control(type='email' placeholder='Email address' required='' autofocus='')
-    input#user-pass.form-control(type='password' placeholder='Password' required='' autofocus='')
-    input#user-repeatpass.form-control(type='password' placeholder='Repeat Password' required='' autofocus='')
+    input#emailAddress.form-control(type='email' placeholder='Email address' required='' autofocus='')
+    input#username.form-control(type='text' placeholder='User name' required='' autofocus='')
+    input#password.form-control(type='password' placeholder='Password' required='' autofocus='')
+    input#repeatPassword.form-control(type='password' placeholder='Repeat Password' required='' autofocus='')
+    p#signUpError.alert.alert-danger.text-center.mt-1.d-none
     button.btn.btn-primary.btn-block(type='submit')
       i.fas.fa-user-plus
       |  Sign Up
     a#cancel_signup(href='#')
       i.fas.fa-angle-left
       |  Back
-
-//- form.form-signin
-//-   button.mt-1.w-100.btn.btn-lg.btn-primary.btn-block Sign Up
-//-   a.mt-1.w-100.btn.btn-lg.btn-primary.btn-block(href='/auth/google') Continue with Google
-//-   a.mt-1.w-100.btn.btn-lg.btn-primary.btn-block(href='/auth/facebook') Continue with Facebook
 
 script(src='https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js' integrity='sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2' crossorigin='anonymous')
 script(src='https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js' integrity='sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF' crossorigin='anonymous')

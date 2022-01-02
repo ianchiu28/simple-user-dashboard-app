@@ -38,4 +38,36 @@ $(()=>{
     window.location.href = '/auth/google';
     return false;
   });
+
+  // sign up event
+  $('.form-signup').submit((e) => {
+    alert('hey');
+
+    const emailAddress = $('#emailAddress').val();
+    const username = $('#username').val();
+    const password = $('#password').val();
+    const repeatPassword = $('#repeatPassword').val();
+
+    $.post('/api/users/' + emailAddress, {
+      username,
+      password,
+    }).done((data) => {
+      console.log('done');
+      console.log(data);
+      window.location.href = '/dashboard';
+    }).fail((jqXHR) => {
+      const data = jqXHR.responseJSON;
+      if (data.status === 'fail') {
+        if (data.data.emailAddress === 'EmailAddressTaken') {
+          $('#signUpError').text('This email address has been taken.');
+        }
+      } else {
+        $('#signUpError').text(data.message);
+      }
+      $('#signUpError').removeClass('d-none');
+    });
+
+    // avoid to execute the actual submit of the form
+    e.preventDefault();
+  });
 });
