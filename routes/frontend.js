@@ -1,9 +1,17 @@
 module.exports = (router) => {
-  router.get('/', function(req, res, next) {
-    res.render('index', {message: req.flash('message')});
+  router.get('/', function(req, res) {
+    if (req.isAuthenticated()) {
+      res.redirect('/dashboard');
+    } else {
+      res.render('index', {message: req.flash('message')});
+    }
   });
 
   router.get('/dashboard', (req, res) => {
-    res.render('dashboard');
+    if (req.isAuthenticated()) {
+      res.render('dashboard');
+    } else {
+      res.redirect('/');
+    }
   });
 };
