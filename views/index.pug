@@ -8,7 +8,7 @@ head
   link(href='stylesheets/signin.css' rel='stylesheet')
 
 #logreg-forms
-  form.form-signin
+  form.form-signin(action='/auth/local' method='post')
     h1.h3.mb-3.font-weight-normal(style='text-align: center')  Sign in
     .social-login
       button.btn.facebook-btn.social-btn(type='button' formnovalidate='')
@@ -20,8 +20,8 @@ head
           i.fab.fa-google-plus-g
           |  Sign in with Google
     p(style='text-align:center')  OR
-    input#inputEmail.form-control(type='email' placeholder='Email address' required='' autofocus='')
-    input#inputPassword.form-control(type='password' placeholder='Password' required='')
+    input#inputEmail.form-control(name='emailAddress' type='email' placeholder='Email address' required='' autofocus='')
+    input#inputPassword.form-control(name='password' type='password' placeholder='Password' required='')
     button.btn.btn-success.btn-block(type='submit')
       i.fas.fa-sign-in-alt
       |  Sign in
