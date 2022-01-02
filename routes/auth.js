@@ -21,4 +21,9 @@ module.exports = (router, passport) => {
     successRedirect: '/dashboard',
     failureRedirect: '/',
   }));
+
+  router.get('/auth/signout', (req, res) => {
+    req.logout();
+    res.redirect('/');
+  });
 };
