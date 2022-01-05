@@ -5,4 +5,9 @@ module.exports = (router, passport) => {
       '/api/users/:emailAddress',
       userController.signUp,
   );
+
+  router.get(
+      '/api/users/current',
+      userController.ensureAuthenticated,
+      userController.getUserInfo);
 };

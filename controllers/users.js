@@ -1,6 +1,11 @@
 const {User} = require('../models');
 const userService = require('../services/users');
 
+/**
+ * Sign up a new user.
+ * @param {object} req express request object
+ * @param {object} res express response object
+ */
 exports.signUp = async (req, res) => {
   const {emailAddress} = req.params;
   const {password, username} = req.body;
@@ -90,5 +95,42 @@ exports.signUp = async (req, res) => {
       status: 'success',
       data: null,
     });
+  });
+};
+
+/**
+ * Ensure request is authenticated.
+ * @middleware
+ * @param {object} req express request object
+ * @param {object} res express response object
+ * @param {function} next express next middleware function
+ */
+exports.ensureAuthenticated = (req, res, next) => {
+  if (req.isAuthenticated()) {
+    next();
+  } else {
+    res.status(401).json({
+      status: 'fail',
+      data: {
+        session: 'Unauthorized',
+      },
+    });
+  }
+};
+
+/**
+ * Get user's information.
+ * @param {object} req express request object
+ * @param {object} res express response object
+ */
+exports.getUserInfo = async (req, res) => {
+  const {username, emailAddress} = req.user;
+
+  res.json({
+    status: 'success',
+    data: {
+      username,
+      emailAddress,
+    },
   });
 };
