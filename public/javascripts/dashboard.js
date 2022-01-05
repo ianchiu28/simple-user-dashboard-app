@@ -34,8 +34,7 @@ function modalEditUsernameSave() {
     if (jqXHR.status === 401) {
       $('#modalUnauthorized').modal('show');
     } else if (jqXHR.status === 503) {
-      // server error
-      $('#modalUnauthorized').modal('show');
+      $('#modalSomethingWrong').modal('show');
     }
   }).always(() => {
     $('#modalEditUsername').modal('hide');
