@@ -22,6 +22,17 @@ function getUserInfo() {
  */
 function modalEditUsernameSave() {
   const newUsername = $('#inputEditUsernameValue').val().toString();
+
+  // must input something
+  if (newUsername.length === 0) {
+    return;
+  }
+
+  // disable and loading
+  $('#btnEditUsernameSave').prop('disabled', true);
+  $('.loading').show();
+
+  // call API
   $.ajax({
     url: '/api/users/current',
     type: 'PUT',
@@ -29,21 +40,28 @@ function modalEditUsernameSave() {
       newUsername,
     },
   }).done(() => {
+    // success, update user info
     getUserInfo();
   }).fail((jqXHR) => {
+    // fail or error, show error message
     if (jqXHR.status === 401) {
       $('#modalUnauthorized').modal('show');
     } else if (jqXHR.status === 503) {
       $('#modalSomethingWrong').modal('show');
     }
   }).always(() => {
-    $('#modalEditUsername').modal('hide');
+    // reset
+    $('#btnEditUsernameSave').prop('disabled', false);
+    $('.loading').hide();
   });
 }
 
 $(() => {
   // icons
   // feather.replace();
+
+  // hide all loading spinner
+  $('.loading').hide();
 
   // get user name and email
   getUserInfo();
