@@ -9,7 +9,7 @@ function getUserInfo() {
   }).fail((jqXHR) => {
     // fail or error, show error message
     if (jqXHR.status === 401) {
-      alert('Unauthorized! Please sign in again.');
+      $('#modalUnauthorized').modal('show');
     }
   });
 }
