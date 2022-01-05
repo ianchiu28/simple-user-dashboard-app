@@ -18,8 +18,25 @@ function getUserInfo() {
  * Click event for save button in modal Edit user name
  */
 function modalEditUsernameSave() {
-  const newUsername = $('#inputEditUsernameValue').val();
-  console.log(newUsername);
+  const newUsername = $('#inputEditUsernameValue').val().toString();
+  $.ajax({
+    url: '/api/users/current',
+    type: 'PUT',
+    data: {
+      newUsername,
+    },
+  }).done(() => {
+    getUserInfo();
+  }).fail((jqXHR) => {
+    if (jqXHR.status === 401) {
+      $('#modalUnauthorized').modal('show');
+    } else if (jqXHR.status === 503) {
+      // server error
+      $('#modalUnauthorized').modal('show');
+    }
+  }).always(() => {
+    $('#modalEditUsername').modal('hide');
+  });
 }
 
 $(() => {
