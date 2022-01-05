@@ -129,8 +129,8 @@ exports.getUserInfo = async (req, res) => {
   res.json({
     status: 'success',
     data: {
-      username,
-      emailAddress,
+      username: username || 'N/A',
+      emailAddress: emailAddress || 'N/A',
     },
   });
 };
