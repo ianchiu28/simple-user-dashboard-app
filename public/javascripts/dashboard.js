@@ -2,7 +2,10 @@
  * Get user information and put them on user profile.
  */
 function getUserInfo() {
-  $.get('/api/users/current').done((data) => {
+  $.ajax({
+    url: '/api/users/current',
+    type: 'GET',
+  }).done((data) => {
     // success, return user info
     $('#profileUsername').text('User name: ' + data.data.username);
     $('#profileEmail').text('Email address: '+ data.data.emailAddress);

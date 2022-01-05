@@ -109,9 +109,13 @@ $(()=>{
     }
 
     // call sign up API
-    $.post('/api/users/' + emailAddress, {
-      username,
-      password,
+    $.ajax({
+      url: '/api/users/' + emailAddress,
+      type: 'POST',
+      data: {
+        username,
+        password,
+      },
     }).done(() => {
       // success, redirect to dashboard page
       window.location.href = '/dashboard';
