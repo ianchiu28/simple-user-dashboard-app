@@ -134,3 +134,55 @@ exports.getUserInfo = async (req, res) => {
     },
   });
 };
+
+/**
+ * Update user's information.
+ * @param {object} req express request object
+ * @param {object} res express response object
+ */
+exports.updateUserInfo = async (req, res) => {
+  const {providerId} = req.user;
+  const {newUsername} = req.body;
+
+  // sanitize input
+  // if (!userService.validatePassword(password)) {
+  //   res.status(400).json({
+  //     status: 'fail',
+  //     data: {
+  //       password: 'Invalid',
+  //     },
+  //   });
+  //   return;
+  // }
+
+  if (!userService.validateUsername(newUsername)) {
+    res.status(400).json({
+      status: 'fail',
+      data: {
+        username: 'Invalid',
+      },
+    });
+    return;
+  }
+
+  // update user info
+  try {
+    await User.update({username: newUsername}, {
+      where: {
+        providerId,
+      },
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(503).json({
+      status: 'error',
+      message: 'DatabaseError',
+    });
+    return;
+  }
+
+  res.json({
+    status: 'success',
+    data: null,
+  });
+};

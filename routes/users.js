@@ -9,5 +9,12 @@ module.exports = (router, passport) => {
   router.get(
       '/api/users/current',
       userController.ensureAuthenticated,
-      userController.getUserInfo);
+      userController.getUserInfo,
+  );
+
+  router.put(
+      '/api/users/current',
+      userController.ensureAuthenticated,
+      userController.updateUserInfo,
+  );
 };
