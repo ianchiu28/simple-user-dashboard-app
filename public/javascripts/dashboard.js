@@ -14,9 +14,21 @@ function getUserInfo() {
   });
 }
 
+/**
+ * Click event for save button in modal Edit user name
+ */
+function modalEditUsernameSave() {
+  const newUsername = $('#inputEditUsernameValue').val();
+  console.log(newUsername);
+}
+
 $(() => {
+  // icons
   // feather.replace();
 
   // get user name and email
   getUserInfo();
+
+  // Edit user name save button click event
+  $('#btnEditUsernameSave').click(modalEditUsernameSave);
 });
