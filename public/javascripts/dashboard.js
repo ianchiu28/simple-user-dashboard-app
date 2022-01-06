@@ -3,7 +3,7 @@
  */
 function getUserInfo() {
   $.ajax({
-    url: '/api/users/current',
+    url: '/api/users/current/info',
     type: 'GET',
   }).done((data) => {
     // success, return user info
@@ -34,7 +34,7 @@ function modalEditUsernameSave() {
 
   // call API
   $.ajax({
-    url: '/api/users/current',
+    url: '/api/users/current/info',
     type: 'PUT',
     data: {
       newUsername,

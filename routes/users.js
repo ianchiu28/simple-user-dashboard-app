@@ -7,7 +7,7 @@ module.exports = (router, passport) => {
   );
 
   router.get(
-      '/api/users/current',
+      '/api/users/current/info',
       userController.ensureAuthenticated,
       userController.getUserInfo,
   );
