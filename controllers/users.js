@@ -144,17 +144,6 @@ exports.updateUserInfo = async (req, res) => {
   const {providerId} = req.user;
   const {newUsername} = req.body;
 
-  // sanitize input
-  // if (!userService.validatePassword(password)) {
-  //   res.status(400).json({
-  //     status: 'fail',
-  //     data: {
-  //       password: 'Invalid',
-  //     },
-  //   });
-  //   return;
-  // }
-
   if (!userService.validateUsername(newUsername)) {
     res.status(400).json({
       status: 'fail',
@@ -168,6 +157,59 @@ exports.updateUserInfo = async (req, res) => {
   // update user info
   try {
     await User.update({username: newUsername}, {
+      where: {
+        providerId,
+      },
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(503).json({
+      status: 'error',
+      message: 'DatabaseError',
+    });
+    return;
+  }
+
+  res.json({
+    status: 'success',
+    data: null,
+  });
+};
+
+/**
+ * Update user's password.
+ * @param {object} req express request object
+ * @param {object} res express response object
+ */
+exports.updateUserPassword = async (req, res) => {
+  const {providerId, password} = req.user;
+  const {oldPassword, newPassword} = req.body;
+
+  // sanitize input
+  if (!userService.validatePassword(newPassword)) {
+    res.status(400).json({
+      status: 'fail',
+      data: {
+        newPassword: 'Invalid',
+      },
+    });
+    return;
+  }
+
+  // check old password
+  if (!User.comparePassword(oldPassword, password)) {
+    res.status(400).json({
+      status: 'fail',
+      data: {
+        oldPassword: 'Invalid',
+      },
+    });
+    return;
+  }
+
+  // update user info
+  try {
+    await User.update({password: User.hashPassword(newPassword)}, {
       where: {
         providerId,
       },

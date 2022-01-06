@@ -13,8 +13,14 @@ module.exports = (router, passport) => {
   );
 
   router.put(
-      '/api/users/current',
+      '/api/users/current/info',
       userController.ensureAuthenticated,
       userController.updateUserInfo,
+  );
+
+  router.put(
+      '/api/users/current/password',
+      userController.ensureAuthenticated,
+      userController.updateUserPassword,
   );
 };
