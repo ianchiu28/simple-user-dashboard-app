@@ -137,6 +137,7 @@ function modalResetPasswordSave() {
     $('#inputOldPassword').val('');
     $('#inputNewPassword').val('');
     $('#inputNewPasswordConfirm').val('');
+    $('#oldPasswordError').hide();
   }).fail((jqXHR) => {
     // fail or error, show error message
     if (jqXHR.status === 400) {
