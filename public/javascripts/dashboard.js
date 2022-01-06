@@ -53,6 +53,10 @@ function modalEditUsernameSave() {
     // reset
     $('#btnEditUsernameSave').prop('disabled', false);
     $('.loading').hide();
+    $('#inputEditUsernameValue').val('');
+
+    // show user profile
+    $('#modalEditUsername').modal('hide');
   });
 }
 
