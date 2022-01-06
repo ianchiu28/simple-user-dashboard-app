@@ -15,7 +15,7 @@ nav.navbar.navbar-dark.sticky-top.bg-dark.flex-md-nowrap.p-0.shadow
       h6#profileEmail.dropdown-header Email address: xxx@xxx.com
       .dropdown-divider
       button.dropdown-item.text-primary(data-toggle="modal" data-target="#modalEditUsername") Edit user name
-      button.dropdown-item.text-primary(data-toggle="modal" data-target="#modalEditUsername") Reset password
+      button.dropdown-item.text-primary(data-toggle="modal" data-target="#modalResetPassword") Reset password
       .dropdown-divider
       form(action="/auth/signout" method="get")
         button.btn.btn-warning.float-right.mr-3(type="submit") Sign out
@@ -110,6 +110,40 @@ nav.navbar.navbar-dark.sticky-top.bg-dark.flex-md-nowrap.p-0.shadow
       .modal-footer
         button.btn.btn-secondary(type="button" data-dismiss="modal") Cancel
         button#btnEditUsernameSave.btn.btn-primary(type="button") Save
+          .loading.spinner-border.spinner-border-sm.ml-1
+
+#modalResetPassword.modal.fade(tabindex="-1")
+  .modal-dialog.modal-dialog-scrollable.modal-dialog-centered
+    .modal-content
+      .modal-header
+        h5.modal-title Reset password
+        button.close(type="button" data-dismiss="modal")
+          span &times;
+      .modal-body
+        .form
+          .form-group
+            label.col-form-label(for="inputOldPassword") Enter old password:
+            input#inputOldPassword.form-control(type="password")
+            label.col-form-label(for="inputNewPassword") Enter new password:
+            input#inputNewPassword.form-control(type="password")
+            p#passwordError.alert.alert-danger.mt-1.small
+              |  Password must contain all of the following requirements:
+              br
+              |  * Contains at least one lower character.
+              br
+              |  * Contains at least one upper character.
+              br
+              |  * Contains at least one digit character.
+              br
+              |  * Contains at least one special character.
+              br
+              |  * Contains at least 8 characters.
+            label.col-form-label(for="inputNewPasswordConfirm") Re-enter new password:
+            input#inputNewPasswordConfirm.form-control(type="password")
+            p#confirmPasswordError.alert.alert-danger.mt-1.small  Password and Confirm Password must be match.
+      .modal-footer
+        button.btn.btn-secondary(type="button" data-dismiss="modal") Cancel
+        button#btnResetPasswordSave.btn.btn-primary(type="button") Save
           .loading.spinner-border.spinner-border-sm.ml-1
 
 script(src='https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js' integrity='sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2' crossorigin='anonymous')
