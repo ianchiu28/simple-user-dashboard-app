@@ -55,7 +55,7 @@ function modalEditUsernameSave() {
     $('.loading').hide();
     $('#inputEditUsernameValue').val('');
 
-    // show user profile
+    // hide modal
     $('#modalEditUsername').modal('hide');
   });
 }
@@ -120,35 +120,37 @@ function modalResetPasswordSave() {
   }
 
   // disable and loading
-  $('#btnEditUsernameSave').prop('disabled', true);
+  $('#btnResetPasswordSave').prop('disabled', true);
   $('.loading').show();
 
   // call API
-  // $.ajax({
-  //   url: '/api/users/current',
-  //   type: 'PUT',
-  //   data: {
-  //     newUsername,
-  //   },
-  // }).done(() => {
-  //   // success, update user info
-  //   getUserInfo();
-  // }).fail((jqXHR) => {
-  //   // fail or error, show error message
-  //   if (jqXHR.status === 401) {
-  //     $('#modalUnauthorized').modal('show');
-  //   } else if (jqXHR.status === 503) {
-  //     $('#modalSomethingWrong').modal('show');
-  //   }
-  // }).always(() => {
-  //   // reset
-  //   $('#btnEditUsernameSave').prop('disabled', false);
-  //   $('.loading').hide();
-  //   $('#inputEditUsernameValue').val('');
-
-  //   // show user profile
-  //   $('#modalEditUsername').modal('hide');
-  // });
+  $.ajax({
+    url: '/api/users/current/password',
+    type: 'PUT',
+    data: {
+      oldPassword,
+      newPassword,
+    },
+  }).done(() => {
+    // success, hide modal and reset inputs
+    $('#modalResetPassword').modal('hide');
+    $('#inputOldPassword').val('');
+    $('#inputNewPassword').val('');
+    $('#inputNewPasswordConfirm').val('');
+  }).fail((jqXHR) => {
+    // fail or error, show error message
+    if (jqXHR.status === 400) {
+      $('#oldPasswordError').show();
+    } else if (jqXHR.status === 401) {
+      $('#modalUnauthorized').modal('show');
+    } else if (jqXHR.status === 503) {
+      $('#modalSomethingWrong').modal('show');
+    }
+  }).always(() => {
+    // reset
+    $('#btnResetPasswordSave').prop('disabled', false);
+    $('.loading').hide();
+  });
 }
 
 $(() => {
@@ -165,6 +167,7 @@ $(() => {
   $('#btnEditUsernameSave').click(modalEditUsernameSave);
 
   // reset password initialize
+  $('#oldPasswordError').hide();
   $('#passwordError').hide();
   $('#confirmPasswordError').hide();
   $('#inputNewPassword').on('input', togglePasswordError);
