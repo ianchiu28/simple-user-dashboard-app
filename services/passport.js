@@ -32,6 +32,11 @@ module.exports = (passport) => {
             return done(null, false, req.flash('message', invalidMessage));
           }
 
+          // not verified
+          if (user.verified === 0) {
+            return done(null, false, req.flash('message', 'NotVerified'));
+          }
+
           return done(null, user);
         })
         .catch((err) => done(err));
