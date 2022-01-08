@@ -23,4 +23,9 @@ module.exports = (router, passport) => {
       userController.ensureAuthenticated,
       userController.updateUserPassword,
   );
+
+  router.get(
+      '/api/users/verify',
+      userController.verifyUser,
+  );
 };

@@ -238,3 +238,54 @@ exports.updateUserPassword = async (req, res) => {
     data: null,
   });
 };
+
+/**
+ * Verify user.
+ * @param {object} req express request object
+ * @param {object} res express response object
+ */
+exports.verifyUser = async (req, res) => {
+  const {token} = req.query;
+
+  // find user by token
+  let user;
+  try {
+    user = await User.findOne({where: {verifiedToken: token}});
+  } catch (err) {
+    console.log(err);
+    res.status(503).json({
+      status: 'error',
+      message: 'DatabaseError',
+    });
+    return;
+  }
+
+  // if not existd
+  if (!user) {
+    // TODO: show error page
+  }
+
+  // update user status: set verified to true and remove verifiedToken
+  try {
+    await User.update({verified: 1, verifiedToken: null}, {
+      where: {
+        providerId: user.providerId,
+      },
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(503).json({
+      status: 'error',
+      message: 'DatabaseError',
+    });
+    return;
+  }
+
+  // set login and redirect to dashboard
+  req.login(user, (err) => {
+    if (err) {
+      console.log(err);
+    }
+    return res.redirect('/dashboard');
+  });
+};
