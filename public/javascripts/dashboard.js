@@ -154,6 +154,17 @@ function modalResetPasswordSave() {
   });
 }
 
+/**
+ * User database table setup
+ */
+function userTableSetup() {
+  // eslint-disable-next-line new-cap
+  $('#userTable').DataTable({
+    ordering: false,
+    lengthChange: false,
+  });
+}
+
 $(() => {
   // icons
   // feather.replace();
@@ -175,4 +186,7 @@ $(() => {
   $('#inputNewPassword').on('input', toggleConfirmPasswordError);
   $('#inputNewPasswordConfirm').on('input', toggleConfirmPasswordError);
   $('#btnResetPasswordSave').click(modalResetPasswordSave);
+
+  // user database table
+  userTableSetup();
 });
