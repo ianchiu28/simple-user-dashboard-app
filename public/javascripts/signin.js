@@ -119,7 +119,7 @@ function signUpSubmit(e) {
  * Sign in submit button event
  * @param {object} e jQuery event object
  */
- function signInSubmit(e) {
+function signInSubmit(e) {
   // avoid to execute the actual submit of the form
   e.preventDefault();
 
@@ -131,7 +131,7 @@ function signUpSubmit(e) {
   $('.loading').show();
   $('#signInError').hide();
 
-  // call sign up API
+  // call sign in API
   $.ajax({
     url: '/auth/local',
     type: 'POST',
@@ -154,20 +154,41 @@ function signUpSubmit(e) {
     } else if (jqXHR.status === 503) {
       $('#modalSomethingWrong').modal('show');
     }
-
-    // fail or error, show error message
-    const data = jqXHR.responseJSON;
-    if (data.status === 'fail') {
-      if (data.data.emailAddress === 'EmailAddressTaken') {
-        $('#signUpError').text('This email address has been taken.');
-      }
-    } else {
-      $('#signUpError').text(data.message);
-    }
-    $('#signUpError').show();
   }).always(() => {
     // reset
     $('#btnSignin').prop('disabled', false);
+    $('.loading').hide();
+  });
+}
+
+/**
+ * A button click event to resend verification mail
+ */
+function resendVerificationMail() {
+  const emailAddress = $('#inputEmail').val();
+
+  // disable and loading
+  $('#btnResendMail').prop('disabled', true);
+  $('.loading').show();
+
+  // call resend mail API
+  $.ajax({
+    url: '/api/users/verify/resend',
+    type: 'POST',
+    data: {
+      emailAddress,
+    },
+  }).done(() => {
+    // success
+    $('#modalNotVerified').modal('hide');
+    $('#modalSignUpSuccess').modal('show');
+  }).fail((jqXHR) => {
+    // fail or error, show error message
+    $('#modalNotVerified').modal('hide');
+    $('#modalSomethingWrong').modal('show');
+  }).always(() => {
+    // reset
+    $('#btnResendMail').prop('disabled', false);
     $('.loading').hide();
   });
 }
@@ -208,4 +229,7 @@ $(()=>{
 
   // sign in submit button event
   $('.form-signin').submit(signInSubmit);
+
+  // resend verification mail
+  $('#btnResendMail').click(resendVerificationMail);
 });
