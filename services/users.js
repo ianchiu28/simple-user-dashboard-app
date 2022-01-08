@@ -57,15 +57,22 @@ exports.validateUsername = (username) => {
 /**
  * Send mail to recipient
  * @param {string} recipient
+ * @param {string} verifiedToken
  * @return {Promise<sendMail>} send mail async function
  */
-exports.sendMail = (recipient) => {
+exports.sendMail = (recipient, verifiedToken) => {
   return new Promise((resolve, reject) => {
     mailTransport.sendMail({
       from: process.env.GMAIL_USER,
       to: recipient,
       subject: 'Welcome to Simple User Dashboard App!',
-      html: '<h1>Hello</h1>',
+      html: `<h4>Hello,</h4><br><br>
+        <h4>To finish setting up this account,
+        please click on the link below:</h4><br>
+        https://simple-user-dashboard-app.herokuapp.com/api/users/verify?token=${verifiedToken}<br><br>
+        <h4>Best Regards,</h4><br>
+        <h4>Simple User Dashboard App</h4>
+      `,
     }, (err) => {
       if (err) {
         reject(err);

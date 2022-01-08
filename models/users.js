@@ -21,6 +21,9 @@ module.exports = (sequelize, DataTypes) => {
     verified: {
       type: DataTypes.INTEGER,
     },
+    verifiedToken: {
+      type: DataTypes.STRING,
+    },
     signUpTimestamp: {
       type: DataTypes.DATE,
     },

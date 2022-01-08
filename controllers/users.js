@@ -1,3 +1,5 @@
+const crypto = require('crypto');
+
 const {User} = require('../models');
 const userService = require('../services/users');
 
@@ -66,6 +68,7 @@ exports.signUp = async (req, res) => {
   }
 
   // not existed, create a new one
+  const verifiedToken = crypto.randomBytes(20).toString('hex');
   try {
     user = await User.create({
       providerId: emailAddress,
@@ -74,6 +77,7 @@ exports.signUp = async (req, res) => {
       password: User.hashPassword(password),
       username,
       verified: 0,
+      verifiedToken,
       signUpTimestamp: new Date().toISOString(),
       loginTimes: 0,
     });
@@ -88,7 +92,7 @@ exports.signUp = async (req, res) => {
 
   // send verification mail
   try {
-    await userService.sendMail(emailAddress);
+    await userService.sendMail(emailAddress, verifiedToken);
   } catch (err) {
     console.log(err);
     res.status(503).json({
