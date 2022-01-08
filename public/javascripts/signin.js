@@ -149,7 +149,7 @@ function signUpSubmit(e) {
       if (message === 'InvalidEmailAddress' || message === 'InvalidPassword') {
         $('#signInError').show();
       } else if (message === 'NotVerified') {
-
+        $('#modalNotVerified').modal('show');
       }
     } else if (jqXHR.status === 503) {
       $('#modalSomethingWrong').modal('show');

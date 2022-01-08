@@ -90,6 +90,21 @@ head
       .modal-footer
         button.btn.btn-primary(type="button" data-dismiss="modal") OK
 
+#modalNotVerified.modal.fade(tabindex="-1")
+  .modal-dialog.modal-dialog-centered
+    .modal-content
+      .modal-header
+        h5.modal-title Account is not verified
+        button.close(type="button" data-dismiss="modal")
+          span &times;
+      .modal-body
+        h6.small Please check the verification mail in the mail box.
+        h6.small Or click the button below to resend verification mail.
+        button#btnResendMail.btn.btn-primary Resend verification mail
+          .loading.spinner-border.spinner-border-sm.ml-1
+      .modal-footer
+        button.btn.btn-secondary(type="button" data-dismiss="modal") Cancel
+
 #modalSignUpSuccess.modal.fade(data-backdrop="static" data-keyboard="false" tabindex="-1")
   .modal-dialog.modal-dialog-centered
     .modal-content
