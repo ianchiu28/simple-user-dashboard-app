@@ -1,3 +1,20 @@
+const nodemailer = require('nodemailer');
+
+// gmail server setting
+const mailTransport = nodemailer.createTransport({
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true,
+  auth: {
+    type: 'OAuth2',
+    user: process.env.GMAIL_USER,
+    clientId: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    refreshToken: process.env.GMAIL_REFRESH_TOKEN,
+    accessToken: process.env.GMAIL_ACCESS_TOKEN,
+  },
+});
+
 /**
  * Validate email address
  * @param {string} email
@@ -35,4 +52,26 @@ exports.validatePassword = (password) => {
  */
 exports.validateUsername = (username) => {
   return typeof username === 'string';
+};
+
+/**
+ * Send mail to recipient
+ * @param {string} recipient
+ * @return {Promise<sendMail>} send mail async function
+ */
+exports.sendMail = (recipient) => {
+  return new Promise((resolve, reject) => {
+    mailTransport.sendMail({
+      from: process.env.GMAIL_USER,
+      to: recipient,
+      subject: 'Welcome to Simple User Dashboard App!',
+      html: '<h1>Hello</h1>',
+    }, (err) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve();
+      }
+    });
+  });
 };
