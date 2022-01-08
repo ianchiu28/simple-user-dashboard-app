@@ -1,8 +1,43 @@
 module.exports = (router, passport) => {
-  router.post('/auth/local', passport.authenticate('local', {
-    successRedirect: '/dashboard',
-    failureRedirect: '/',
-  }));
+  router.post('/auth/local', (req, res, next) => {
+    passport.authenticate('local', (err, user, info) => {
+      // error
+      if (err) {
+        console.log(err);
+        return res.status(503).json({
+          status: 'error',
+          error: 'ServerError',
+        });
+      }
+
+      // login failed
+      if (!user) {
+        console.log(info);
+        return res.status(400).json({
+          status: 'fail',
+          data: {
+            auth: info,
+          },
+        });
+      }
+
+      // establish session
+      req.login(user, (err) => {
+        if (err) {
+          console.log(err);
+          return res.status(503).json({
+            status: 'error',
+            error: 'ServerError',
+          });
+        }
+
+        return res.json({
+          status: 'success',
+          data: null,
+        });
+      });
+    })(req, res, next);
+  });
 
   router.get('/auth/google', passport.authenticate('google', {
     scope: ['profile', 'email'],

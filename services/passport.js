@@ -19,22 +19,20 @@ module.exports = (passport) => {
     // check if email address existed
     User
         .findOne({where: {providerId}})
-        .then((user)=>{
-          const invalidMessage = 'Invalid email or password';
-
+        .then((user)=> {
           // not existed
           if (!user) {
-            return done(null, false, req.flash('message', invalidMessage));
+            return done(null, false, 'InvalidEmailAddress');
           }
 
           // invalid password
           if (!User.comparePassword(password, user.password)) {
-            return done(null, false, req.flash('message', invalidMessage));
+            return done(null, false, 'InvalidPassword');
           }
 
           // not verified
           if (user.verified === 0) {
-            return done(null, false, req.flash('message', 'NotVerified'));
+            return done(null, false, 'NotVerified');
           }
 
           return done(null, user);
