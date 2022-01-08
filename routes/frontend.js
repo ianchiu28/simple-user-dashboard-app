@@ -3,7 +3,7 @@ module.exports = (router) => {
     if (req.isAuthenticated()) {
       res.redirect('/dashboard');
     } else {
-      res.render('index', {message: req.flash('message')});
+      res.render('index');
     }
   });
 

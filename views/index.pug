@@ -8,7 +8,7 @@ head
   link(href='stylesheets/signin.css' rel='stylesheet')
 
 #logreg-forms
-  form.form-signin(action='/auth/local' method='post')
+  form.form-signin
     h1.h3.mb-3.font-weight-normal(style='text-align: center')  Sign in
     .social-login
       button.btn.facebook-btn.social-btn(type='button' formnovalidate='')
@@ -22,14 +22,11 @@ head
     p(style='text-align:center')  OR
     input#inputEmail.form-control(name='emailAddress' type='email' placeholder='Email address' required='' autofocus='')
     input#inputPassword.form-control(name='password' type='password' placeholder='Password' required='')
-    if (message.length > 0)
-      if (message == 'NotVerified')
-        button Resent verification email
-      else
-        .alert.alert-danger.text-center.mt-1 #{message}
-    button.btn.btn-success.btn-block(type='submit')
+    #signInError.alert.alert-danger.text-center.mt-1 Invalid email or password
+    button#btnSignin.btn.btn-success.btn-block(type='submit')
       i.fas.fa-sign-in-alt
       |  Sign in
+      .loading.spinner-border.spinner-border-sm.ml-1
     //- a#forgot_pswd(href='#') Forgot password?
     hr
     //- <p>Don't have an account!</p>
@@ -81,6 +78,17 @@ head
     a#cancel_signup(href='#')
       i.fas.fa-angle-left
       |  Back
+
+#modalSomethingWrong.modal.fade(tabindex="-1")
+  .modal-dialog.modal-dialog-centered
+    .modal-content
+      .modal-header
+        h5.modal-title Something went wrong
+        button.close(type="button" data-dismiss="modal")
+          span &times;
+      .modal-body Please try again later.
+      .modal-footer
+        button.btn.btn-primary(type="button" data-dismiss="modal") OK
 
 #modalSignUpSuccess.modal.fade(data-backdrop="static" data-keyboard="false" tabindex="-1")
   .modal-dialog.modal-dialog-centered

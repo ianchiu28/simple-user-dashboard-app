@@ -115,6 +115,63 @@ function signUpSubmit(e) {
   });
 }
 
+/**
+ * Sign in submit button event
+ * @param {object} e jQuery event object
+ */
+ function signInSubmit(e) {
+  // avoid to execute the actual submit of the form
+  e.preventDefault();
+
+  const emailAddress = $('#inputEmail').val();
+  const password = $('#inputPassword').val();
+
+  // disable and loading
+  $('#btnSignin').prop('disabled', true);
+  $('.loading').show();
+  $('#signInError').hide();
+
+  // call sign up API
+  $.ajax({
+    url: '/auth/local',
+    type: 'POST',
+    data: {
+      emailAddress,
+      password,
+    },
+  }).done(() => {
+    // success
+    window.location.href = '/dashboard';
+  }).fail((jqXHR) => {
+    // fail or error, show error message
+    if (jqXHR.status === 400) {
+      const message = jqXHR.responseJSON.data.auth;
+      if (message === 'InvalidEmailAddress' || message === 'InvalidPassword') {
+        $('#signInError').show();
+      } else if (message === 'NotVerified') {
+
+      }
+    } else if (jqXHR.status === 503) {
+      $('#modalSomethingWrong').modal('show');
+    }
+
+    // fail or error, show error message
+    const data = jqXHR.responseJSON;
+    if (data.status === 'fail') {
+      if (data.data.emailAddress === 'EmailAddressTaken') {
+        $('#signUpError').text('This email address has been taken.');
+      }
+    } else {
+      $('#signUpError').text(data.message);
+    }
+    $('#signUpError').show();
+  }).always(() => {
+    // reset
+    $('#btnSignin').prop('disabled', false);
+    $('.loading').hide();
+  });
+}
+
 $(()=>{
   // toggle reset password page
   $('#logreg-forms #forgot_pswd').click(toggleResetPswd);
@@ -136,15 +193,19 @@ $(()=>{
     return false;
   });
 
-  // sign up error message initialize
+  // initialize
   $('.loading').hide();
   $('#passwordError').hide();
   $('#confirmPasswordError').hide();
   $('#signUpError').hide();
+  $('#signInError').hide();
   $('#password').on('input', togglePasswordError);
   $('#password').on('input', toggleConfirmPasswordError);
   $('#confirmPassword').on('input', toggleConfirmPasswordError);
 
   // sign up submit button event
   $('.form-signup').submit(signUpSubmit);
+
+  // sign in submit button event
+  $('.form-signin').submit(signInSubmit);
 });
