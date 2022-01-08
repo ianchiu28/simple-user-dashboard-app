@@ -95,8 +95,8 @@ function signUpSubmit(e) {
       password,
     },
   }).done(() => {
-    // success, redirect to login page
-    window.location.href = '/';
+    // success
+    $('#modalSignUpSuccess').modal('show');
   }).fail((jqXHR) => {
     // fail or error, show error message
     const data = jqXHR.responseJSON;
