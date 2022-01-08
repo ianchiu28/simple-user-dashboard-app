@@ -28,4 +28,9 @@ module.exports = (router, passport) => {
       '/api/users/verify',
       userController.verifyUser,
   );
+
+  router.post(
+      '/api/users/verify/resend',
+      userController.resendVerificationMail,
+  );
 };

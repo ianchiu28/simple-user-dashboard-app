@@ -289,3 +289,91 @@ exports.verifyUser = async (req, res) => {
     return res.redirect('/dashboard');
   });
 };
+
+/**
+ * Resend verification mail to user.
+ * @param {object} req express request object
+ * @param {object} res express response object
+ */
+exports.resendVerificationMail = async (req, res) => {
+  const {emailAddress} = req.body;
+
+  // sanitize input
+  if (!userService.validateEmail(emailAddress)) {
+    res.status(400).json({
+      status: 'fail',
+      data: {
+        emailAddress: 'Invalid',
+      },
+    });
+    return;
+  }
+
+  // check if email address existed and its verified status
+  let user;
+  try {
+    user = await User.findOne({where: {providerId: emailAddress}});
+  } catch (err) {
+    console.log(err);
+    res.status(503).json({
+      status: 'error',
+      message: 'DatabaseError',
+    });
+    return;
+  }
+
+  // not existed
+  if (!user) {
+    res.status(400).json({
+      status: 'fail',
+      data: {
+        emailAddress: 'NotExisted',
+      },
+    });
+    return;
+  }
+
+  // already verified
+  if (user.verified === 1) {
+    res.status(400).json({
+      status: 'fail',
+      data: {
+        verified: true,
+      },
+    });
+  }
+
+  // update verified token
+  const verifiedToken = crypto.randomBytes(20).toString('hex');
+  try {
+    await User.update({verifiedToken}, {
+      where: {
+        providerId: user.providerId,
+      },
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(503).json({
+      status: 'error',
+      message: 'DatabaseError',
+    });
+    return;
+  }
+
+  // send verification mail
+  try {
+    await userService.sendMail(emailAddress, verifiedToken);
+  } catch (err) {
+    console.log(err);
+    res.status(503).json({
+      status: 'error',
+      message: 'EmailServiceError',
+    });
+    return;
+  }
+
+  res.json({
+    status: 'success',
+    data: null,
+  });
+};
