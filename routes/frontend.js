@@ -14,4 +14,8 @@ module.exports = (router) => {
       res.redirect('/');
     }
   });
+
+  router.get('/verifyError', (req, res) => {
+    res.render('verifyError');
+  });
 };

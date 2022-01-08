@@ -262,7 +262,7 @@ exports.verifyUser = async (req, res) => {
 
   // if not existd
   if (!user) {
-    // TODO: show error page
+    return res.redirect('/verifyError');
   }
 
   // update user status: set verified to true and remove verifiedToken
