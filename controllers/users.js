@@ -73,6 +73,7 @@ exports.signUp = async (req, res) => {
       emailAddress,
       password: User.hashPassword(password),
       username,
+      verified: 0,
       signUpTimestamp: new Date().toISOString(),
       loginTimes: 0,
     });
@@ -85,16 +86,9 @@ exports.signUp = async (req, res) => {
     return;
   }
 
-  // set up login session
-  req.login(user, (err) => {
-    if (err) {
-      console.log(err);
-    }
-
-    res.json({
-      status: 'success',
-      data: null,
-    });
+  res.json({
+    status: 'success',
+    data: null,
   });
 };
 

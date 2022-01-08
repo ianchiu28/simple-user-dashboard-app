@@ -71,9 +71,10 @@ head
     input#confirmPassword.form-control(type='password' placeholder='Confirm Password' required='' autofocus='')
     p#confirmPasswordError.alert.alert-danger.mt-1.small  Password and Confirm Password must be match.
     p#signUpError.alert.alert-danger.mt-1.small
-    button.btn.btn-primary.btn-block(type='submit')
+    button#btnSignup.btn.btn-primary.btn-block(type='submit')
       i.fas.fa-user-plus
       |  Sign Up
+      .loading.spinner-border.spinner-border-sm.ml-1
     a#cancel_signup(href='#')
       i.fas.fa-angle-left
       |  Back
