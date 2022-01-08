@@ -86,6 +86,18 @@ exports.signUp = async (req, res) => {
     return;
   }
 
+  // send verification mail
+  try {
+    await userService.sendMail(emailAddress);
+  } catch (err) {
+    console.log(err);
+    res.status(503).json({
+      status: 'error',
+      message: 'EmailServiceError',
+    });
+    return;
+  }
+
   res.json({
     status: 'success',
     data: null,
