@@ -67,6 +67,7 @@ module.exports = (passport) => {
                 provider: 'google',
                 emailAddress,
                 username,
+                verified: 1,
                 signUpTimestamp: new Date().toISOString(),
                 loginTimes: 0,
               })
@@ -106,6 +107,7 @@ module.exports = (passport) => {
                 provider: 'facebook',
                 emailAddress,
                 username,
+                verified: 1,
                 signUpTimestamp: new Date().toISOString(),
                 loginTimes: 0,
               })
