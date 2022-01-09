@@ -384,6 +384,8 @@ exports.resendVerificationMail = async (req, res) => {
  * @param {object} res express response object
  */
 exports.listUsers = async (req, res) => {
+  const {draw, start, length} = req.query;
+
   // get users
   let users;
   try {
@@ -405,10 +407,21 @@ exports.listUsers = async (req, res) => {
     return;
   }
 
+  const data = users.map((e) => ([
+    e.dataValues.emailAddress,
+    e.dataValues.username,
+    e.dataValues.signUpTimestamp,
+    e.dataValues.loginTimes,
+    e.dataValues.sessionTimestamp,
+  ]));
+
   res.json({
     status: 'success',
     data: {
-      users,
+      draw,
+      recordsTotal: 8,
+      recordsFiltered: 8,
+      data,
     },
   });
 };

@@ -162,6 +162,16 @@ function userTableSetup() {
   $('#userTable').DataTable({
     ordering: false,
     lengthChange: false,
+    serverSide: true,
+    ajax: {
+      url: '/api/users',
+      dataSrc: (json) => {
+        json.draw = json.data.draw;
+        json.recordsTotal = json.data.recordsTotal;
+        json.recordsFiltered = json.data.recordsFiltered;
+        return json.data.data;
+      },
+    },
   });
 }
 
