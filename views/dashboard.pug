@@ -36,9 +36,20 @@ nav.navbar.navbar-dark.sticky-top.bg-dark.flex-md-nowrap.p-0.shadow
     //-             |               Orders
     //- main.col-md-9.ml-sm-auto.col-lg-10.px-md-4(role='main')
     main.col-sm-12(role='main')
-      .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.pb-2.mb-3.border-bottom
-        h1.h2 Dashboard
-      .table-responsive
+      .card-deck.mt-4
+        .card
+          .card-body
+            h5.card-title Total number of users
+            h5.card-text.text-right.text-success 100
+        .card
+          .card-body
+            h5.card-title Active users today
+            h5.card-text.text-right.text-success 30
+        .card
+          .card-body
+            h5.card-title Average active users in 7 days
+            h5.card-text.text-right.text-success 7
+      .table-responsive.mt-4
         table#userTable.table.table-striped.table-sm.display
           thead
             tr
