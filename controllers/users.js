@@ -386,6 +386,19 @@ exports.resendVerificationMail = async (req, res) => {
 exports.listUsers = async (req, res) => {
   const {draw, start, length} = req.query;
 
+  // get total count
+  let recordsTotal;
+  try {
+    recordsTotal = await User.count();
+  } catch (err) {
+    console.log(err);
+    res.status(503).json({
+      status: 'error',
+      message: 'DatabaseError',
+    });
+    return;
+  }
+
   // get users
   let users;
   try {
@@ -397,6 +410,11 @@ exports.listUsers = async (req, res) => {
         'loginTimes',
         'sessionTimestamp',
       ],
+      order: [
+        ['emailAddress', 'ASC'],
+      ],
+      offset: start,
+      limit: length,
     });
   } catch (err) {
     console.log(err);
@@ -419,8 +437,8 @@ exports.listUsers = async (req, res) => {
     status: 'success',
     data: {
       draw,
-      recordsTotal: 8,
-      recordsFiltered: 8,
+      recordsTotal,
+      recordsFiltered: recordsTotal,
       data,
     },
   });

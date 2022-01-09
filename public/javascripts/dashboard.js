@@ -162,6 +162,7 @@ function userTableSetup() {
   $('#userTable').DataTable({
     ordering: false,
     lengthChange: false,
+    searching: false,
     serverSide: true,
     ajax: {
       url: '/api/users',
