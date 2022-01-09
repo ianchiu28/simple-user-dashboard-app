@@ -491,7 +491,7 @@ exports.getUsersStatistics = async (req, res) => {
   }
 
   // get active users in 7 days, then calculate the average
-  let activeUsers7days = 0;
+  const activeUsers7days = 0;
   // try {
   //   activeUsers7days = await User.count();
   // } catch (err) {

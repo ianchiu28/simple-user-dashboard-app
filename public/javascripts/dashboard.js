@@ -155,6 +155,26 @@ function modalResetPasswordSave() {
 }
 
 /**
+ * Get users statistics
+ */
+function getUsersStatistics() {
+  $.ajax({
+    url: '/api/users/statistics',
+    type: 'GET',
+  }).done((data) => {
+    // success, return user info
+    $('#statisticsTotal').text(data.data.total);
+    $('#statisticsActiveToday').text(data.data.activeUsers);
+    $('#statisticsActive7day').text(data.data.activeUsers7days);
+  }).fail((jqXHR) => {
+    // fail or error, show error message
+    if (jqXHR.status === 401) {
+      $('#modalUnauthorized').modal('show');
+    }
+  });
+}
+
+/**
  * User database table setup
  */
 function userTableSetup() {
@@ -197,6 +217,9 @@ $(() => {
   $('#inputNewPassword').on('input', toggleConfirmPasswordError);
   $('#inputNewPasswordConfirm').on('input', toggleConfirmPasswordError);
   $('#btnResetPasswordSave').click(modalResetPasswordSave);
+
+  // get users statistics
+  getUsersStatistics();
 
   // user database table
   userTableSetup();
