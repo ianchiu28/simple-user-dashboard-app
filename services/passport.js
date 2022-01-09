@@ -12,8 +12,7 @@ module.exports = (passport) => {
   passport.use('local', new LocalStrategy({
     usernameField: 'emailAddress',
     passwordField: 'password',
-    passReqToCallback: true,
-  }, (req, emailAddress, password, done) => {
+  }, (emailAddress, password, done) => {
     const providerId = emailAddress;
 
     // check if email address existed
