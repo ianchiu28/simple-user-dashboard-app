@@ -1,3 +1,5 @@
+const userService = require('../services/users');
+
 module.exports = (router) => {
   router.get('/', (req, res) => {
     if (req.isAuthenticated()) {
@@ -7,8 +9,14 @@ module.exports = (router) => {
     }
   });
 
-  router.get('/dashboard', (req, res) => {
+  router.get('/dashboard', async (req, res) => {
     if (req.isAuthenticated()) {
+      try {
+        userService.updateSessionTimestamp(req.user);
+      } catch (err) {
+        console.log(err);
+      }
+
       res.render('dashboard');
     } else {
       res.redirect('/');

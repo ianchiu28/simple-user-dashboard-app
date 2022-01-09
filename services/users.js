@@ -1,4 +1,5 @@
 const nodemailer = require('nodemailer');
+const {User} = require('../models');
 
 // gmail server setting
 const mailTransport = nodemailer.createTransport({
@@ -80,5 +81,18 @@ exports.sendMail = (recipient, verifiedToken) => {
         resolve();
       }
     });
+  });
+};
+
+/**
+ * Update user session timestamp
+ * @param {Object} user User model
+ * @return {Promise<updateUser>} update session timestamp async function
+ */
+exports.updateSessionTimestamp = (user) => {
+  return User.update({
+    sessionTimestamp: new Date().toISOString(),
+  }, {
+    where: {providerId: user.providerId},
   });
 };
