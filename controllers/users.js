@@ -1,4 +1,5 @@
 const crypto = require('crypto');
+const {Op} = require('sequelize');
 
 const {User} = require('../models');
 const userService = require('../services/users');
@@ -440,6 +441,74 @@ exports.listUsers = async (req, res) => {
       recordsTotal,
       recordsFiltered: recordsTotal,
       data,
+    },
+  });
+};
+
+/**
+ * Get users statistics like total users, active users, and average in 7 days.
+ * @param {object} req express request object
+ * @param {object} res express response object
+ */
+exports.getUsersStatistics = async (req, res) => {
+  // get total count
+  let total;
+  try {
+    total = await User.count();
+  } catch (err) {
+    console.log(err);
+    res.status(503).json({
+      status: 'error',
+      message: 'DatabaseError',
+    });
+    return;
+  }
+
+  // get active users today
+  const today = new Date();
+  today.setUTCHours(0, 0, 0, 0);
+
+  const tomorrow = new Date();
+  tomorrow.setUTCDate(tomorrow.getUTCDate() + 1);
+  tomorrow.setUTCHours(0, 0, 0, 0);
+
+  let activeUsers;
+  try {
+    activeUsers = await User.count({
+      where: {
+        sessionTimestamp: {
+          [Op.between]: [today, tomorrow],
+        },
+      },
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(503).json({
+      status: 'error',
+      message: 'DatabaseError',
+    });
+    return;
+  }
+
+  // get active users in 7 days, then calculate the average
+  let activeUsers7days = 0;
+  // try {
+  //   activeUsers7days = await User.count();
+  // } catch (err) {
+  //   console.log(err);
+  //   res.status(503).json({
+  //     status: 'error',
+  //     message: 'DatabaseError',
+  //   });
+  //   return;
+  // }
+
+  res.json({
+    status: 'success',
+    data: {
+      total,
+      activeUsers,
+      activeUsers7days,
     },
   });
 };

@@ -39,4 +39,10 @@ module.exports = (router, passport) => {
       userController.ensureAuthenticated,
       userController.listUsers,
   );
+
+  router.get(
+      '/api/users/statistics',
+      userController.ensureAuthenticated,
+      userController.getUsersStatistics,
+  );
 };
