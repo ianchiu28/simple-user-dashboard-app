@@ -377,3 +377,38 @@ exports.resendVerificationMail = async (req, res) => {
     data: null,
   });
 };
+
+/**
+ * List all users with DataTable format.
+ * @param {object} req express request object
+ * @param {object} res express response object
+ */
+exports.listUsers = async (req, res) => {
+  // get users
+  let users;
+  try {
+    users = await User.findAll({
+      attributes: [
+        'emailAddress',
+        'username',
+        'signUpTimestamp',
+        'loginTimes',
+        'sessionTimestamp',
+      ],
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(503).json({
+      status: 'error',
+      message: 'DatabaseError',
+    });
+    return;
+  }
+
+  res.json({
+    status: 'success',
+    data: {
+      users,
+    },
+  });
+};

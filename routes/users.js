@@ -33,4 +33,10 @@ module.exports = (router, passport) => {
       '/api/users/verify/resend',
       userController.resendVerificationMail,
   );
+
+  router.get(
+      '/api/users',
+      userController.ensureAuthenticated,
+      userController.listUsers,
+  );
 };
