@@ -34,7 +34,15 @@ module.exports = (passport) => {
             return done(null, false, 'NotVerified');
           }
 
-          return done(null, user);
+          // increase login times
+          User
+              .update({loginTimes: user.loginTimes + 1}, {
+                where: {
+                  providerId: user.providerId,
+                },
+              })
+              .then(() => done(null, user))
+              .catch((err) => done(err));
         })
         .catch((err) => done(err));
   }));
@@ -59,10 +67,19 @@ module.exports = (passport) => {
         .then((user)=>{
           // existed, login
           if (user) {
-            return done(null, user);
+            // increase login times
+            User
+                .update({loginTimes: user.loginTimes + 1}, {
+                  where: {
+                    providerId: user.providerId,
+                  },
+                })
+                .then(() => done(null, user))
+                .catch((err) => done(err));
+            return;
           }
 
-          // not existed, create a new one
+          // not existed, create a new one and login
           User
               .create({
                 providerId,
@@ -71,7 +88,7 @@ module.exports = (passport) => {
                 username,
                 verified: 1,
                 signUpTimestamp: new Date().toISOString(),
-                loginTimes: 0,
+                loginTimes: 1,
               })
               .then((user) => done(null, user))
               .catch((err) => done(err));
@@ -99,10 +116,19 @@ module.exports = (passport) => {
         .then((user)=>{
           // existed, login
           if (user) {
-            return done(null, user);
+            // increase login times
+            User
+                .update({loginTimes: user.loginTimes + 1}, {
+                  where: {
+                    providerId: user.providerId,
+                  },
+                })
+                .then(() => done(null, user))
+                .catch((err) => done(err));
+            return;
           }
 
-          // not existed, create a new one
+          // not existed, create a new one and login
           User
               .create({
                 providerId,
@@ -111,7 +137,7 @@ module.exports = (passport) => {
                 username,
                 verified: 1,
                 signUpTimestamp: new Date().toISOString(),
-                loginTimes: 0,
+                loginTimes: 1,
               })
               .then((user) => done(null, user))
               .catch((err) => done(err));
