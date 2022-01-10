@@ -1,6 +1,14 @@
 #! /app/.heroku/node/bin/node
-function sayHello() {
-    console.log('Hello');
+
+const {User} = require('../models');
+
+/**
+ * Scheduler main function
+ */
+function main() {
+  console.log('Hello');
+  User.count().then((count) => console.log(count));
 }
-sayHello();
+
+main();
 process.exit();
