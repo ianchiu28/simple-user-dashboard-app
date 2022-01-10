@@ -1,7 +1,7 @@
 const crypto = require('crypto');
 const {Op} = require('sequelize');
 
-const {User} = require('../models');
+const {User, Statistic} = require('../models');
 const userService = require('../services/users');
 
 /**
@@ -491,17 +491,26 @@ exports.getUsersStatistics = async (req, res) => {
   }
 
   // get active users in 7 days, then calculate the average
-  const activeUsers7days = 0;
-  // try {
-  //   activeUsers7days = await User.count();
-  // } catch (err) {
-  //   console.log(err);
-  //   res.status(503).json({
-  //     status: 'error',
-  //     message: 'DatabaseError',
-  //   });
-  //   return;
-  // }
+  let lastSixRecord;
+  try {
+    lastSixRecord = await Statistic.findAll({
+      order: [
+        ['date', 'DESC'],
+      ],
+      limit: 6,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(503).json({
+      status: 'error',
+      message: 'DatabaseError',
+    });
+    return;
+  }
+  const sum = lastSixRecord.reduce((pre, cur) => {
+    return pre + cur.dataValues.activeUser;
+  }, activeUsers);
+  const activeUsers7days = Math.round(sum / 7);
 
   res.json({
     status: 'success',
