@@ -7,8 +7,10 @@ const {User} = require('../models');
  */
 function main() {
   console.log('Hello');
-  User.count().then((count) => console.log(count));
+  User.count().then((count) => {
+    console.log(count);
+    process.exit();
+  });
 }
 
 main();
-process.exit();
