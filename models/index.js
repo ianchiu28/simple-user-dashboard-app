@@ -17,3 +17,9 @@ exports.sequelize = sequelize;
  * User Model
  */
 exports.User = require('./users')(sequelize, DataTypes);
+
+
+/**
+ * Statistic Model
+ */
+exports.Statistic = require('./statistics')(sequelize, DataTypes);
