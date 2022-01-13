@@ -23,7 +23,9 @@
     "pg": "^8.7.1",
     "pg-hstore": "^2.3.4",
     "pug": "^3.0.2",
-    "sequelize": "^7.0.0-alpha.2"
+    "sequelize": "^7.0.0-alpha.2",
+    "swagger-jsdoc": "^6.1.0",
+    "swagger-ui-express": "^4.3.0"
   },
   "devDependencies": {
     "eslint": "^8.5.0",
