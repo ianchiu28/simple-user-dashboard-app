@@ -42,6 +42,7 @@ app.use(flash());
 require('./routes/frontend')(app);
 require('./routes/auth')(app, passport);
 require('./routes/users')(app, passport);
+require('./routes/swagger')(app);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
