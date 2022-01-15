@@ -6,11 +6,11 @@ module.exports = (sequelize, DataTypes) => {
    *     Statistics:
    *       type: object
    *       properties:
-   *          date:
-   *            type: string
-   *            example: 2022-01-01 00:00:00+00
-   *          activeUser:
-   *            type: integer
+   *         date:
+   *           type: string
+   *           example: 2022-01-01 00:00:00+00
+   *         activeUser:
+   *           type: integer
    *           example: 12
    *       required:
    *         - date

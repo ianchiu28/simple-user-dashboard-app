@@ -14,6 +14,7 @@ const openApiSpecification = swaggerJsdoc({
     './routes/users.js',
     './models/index.js',
     './models/users.js',
+    './models/statistics.js',
   ],
   host: 'https://simple-user-dashboard-app',
   tags: [{
