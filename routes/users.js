@@ -122,6 +122,68 @@ module.exports = (router, passport) => {
       userController.getUserInfo,
   );
 
+  /**
+   * @openapi
+   * /api/users/current/info:
+   *   put:
+   *     tags:
+   *     - user
+   *     summary: Update current user info
+   *     security:
+   *       - cookieAuth: []
+   *     requestBody:
+   *       description: Enter new user name
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             $ref: '#/components/schemas/User'
+   *           example:
+   *             newUsername: Test123
+   *     responses:
+   *       200:
+   *         description: Sign up success.
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/ResponseSuccess'
+   *             example:
+   *               status: success
+   *               data: null
+   *       400:
+   *         description: Fail for some reason.
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/ResponseFail'
+   *             examples:
+   *               InvalidUserName:
+   *                 value:
+   *                   status: fail
+   *                   data:
+   *                     username: Invalid
+   *       401:
+   *         description: Current session is unauthorized.
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/ResponseFail'
+   *             example:
+   *               status: fail
+   *               data:
+   *                 session: Unauthorized
+   *       503:
+   *         description: Server issues.
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/ResponseError'
+   *             examples:
+   *               DatabaseError:
+   *                 value:
+   *                   status: error
+   *                   message: DatabaseError
+   */
   router.put(
       '/api/users/current/info',
       userController.ensureAuthenticated,
