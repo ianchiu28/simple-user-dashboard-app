@@ -110,7 +110,7 @@ module.exports = (router, passport) => {
   /**
    * @openapi
    * /auth/google:
-   *   post:
+   *   get:
    *     tags:
    *     - auth
    *     summary: "Sign in with google strategy"
@@ -141,7 +141,7 @@ module.exports = (router, passport) => {
   /**
    * @openapi
    * /auth/facebook:
-   *   post:
+   *   get:
    *     tags:
    *     - auth
    *     summary: "Sign in with facebook strategy"
