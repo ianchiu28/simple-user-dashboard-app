@@ -322,7 +322,7 @@ module.exports = (router, passport) => {
    *             emailAddress: test@test.com
    *     responses:
    *       200:
-   *         description: Resend up success.
+   *         description: Success and resend verification email.
    *         content:
    *           application/json:
    *             schema:
@@ -331,7 +331,7 @@ module.exports = (router, passport) => {
    *               status: success
    *               data: null
    *       400:
-   *         description: Sign up fail for some reason.
+   *         description: Fail for some reason.
    *         content:
    *           application/json:
    *             schema:
