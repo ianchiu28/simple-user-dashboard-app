@@ -9,7 +9,20 @@ const openApiSpecification = swaggerJsdoc({
       version: '1.0.0',
     },
   },
-  apis: ['./routes/auth.js', './routes/users.js'],
+  apis: [
+    './routes/auth.js',
+    './routes/users.js',
+    './models/index.js',
+    './models/users.js',
+  ],
+  host: 'https://simple-user-dashboard-app',
+  tags: [{
+    name: 'auth',
+    description: 'Authentication APIs',
+  }, {
+    name: 'user',
+    description: 'User related operations',
+  }],
 });
 
 module.exports = (router) => {
