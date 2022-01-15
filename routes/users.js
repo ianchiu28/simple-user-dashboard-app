@@ -264,6 +264,40 @@ module.exports = (router, passport) => {
       userController.updateUserPassword,
   );
 
+  /**
+   * @openapi
+   * /api/users/verify:
+   *   get:
+   *     tags:
+   *     - user
+   *     summary: Verify account.
+   *     security: []
+   *     parameters:
+   *       - in: query
+   *         name: token
+   *         required: true
+   *         schema:
+   *           type: string
+   *         example: abcd1234
+   *     responses:
+   *       200:
+   *         description: >
+   *           Verify success.<br>
+   *           Login automatically and redirect to dashboard page.
+   *       400:
+   *         description: Verify fail and render a error page.
+   *       503:
+   *         description: Server issues.
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/ResponseError'
+   *             examples:
+   *               DatabaseError:
+   *                 value:
+   *                   status: error
+   *                   message: DatabaseError
+   */
   router.get(
       '/api/users/verify',
       userController.verifyUser,
