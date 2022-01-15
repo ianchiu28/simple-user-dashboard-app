@@ -373,6 +373,78 @@ module.exports = (router, passport) => {
       userController.resendVerificationMail,
   );
 
+  /**
+   * @openapi
+   * /api/users:
+   *   get:
+   *     tags:
+   *     - user
+   *     summary: List all users
+   *     security:
+   *       - cookieAuth: []
+   *     parameters:
+   *       - in: query
+   *         name: draw
+   *         required: true
+   *         schema:
+   *           type: integer
+   *         example: 1
+   *         description: a sequence id for DataTable
+   *       - in: query
+   *         name: start
+   *         required: true
+   *         schema:
+   *           type: integer
+   *         example: 0
+   *         description: the offset of items to skip
+   *       - in: query
+   *         name: length
+   *         required: true
+   *         schema:
+   *           type: integer
+   *         example: 10
+   *         description: the numbers of items to return
+   *     responses:
+   *       200:
+   *         description: Return 10 users.
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/ResponseSuccess'
+   *             example:
+   *               status: success
+   *               data:
+   *                 draw: 1
+   *                 recordsTotal: 15
+   *                 recordsFiltered: 15
+   *                 data:
+   *                   - emailAddress: test@test.com
+   *                     username: Test123
+   *                     signUpTimestamp: 2022-01-01T01:02:03.000Z
+   *                     loginTimes: 10
+   *                     sessionTimestamp: 2022-01-01T01:02:03.000Z
+   *       401:
+   *         description: Current session is unauthorized.
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/ResponseFail'
+   *             example:
+   *               status: fail
+   *               data:
+   *                 session: Unauthorized
+   *       503:
+   *         description: Server issues.
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/ResponseError'
+   *             examples:
+   *               DatabaseError:
+   *                 value:
+   *                   status: error
+   *                   message: DatabaseError
+   */
   router.get(
       '/api/users',
       userController.ensureAuthenticated,
