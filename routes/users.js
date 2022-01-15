@@ -142,7 +142,7 @@ module.exports = (router, passport) => {
    *             newUsername: Test123
    *     responses:
    *       200:
-   *         description: Sign up success.
+   *         description: Update success.
    *         content:
    *           application/json:
    *             schema:
@@ -190,6 +190,74 @@ module.exports = (router, passport) => {
       userController.updateUserInfo,
   );
 
+  /**
+   * @openapi
+   * /api/users/current/password:
+   *   put:
+   *     tags:
+   *     - user
+   *     summary: Update current user password
+   *     security:
+   *       - cookieAuth: []
+   *     requestBody:
+   *       description: Enter old and new password
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             $ref: '#/components/schemas/User'
+   *           example:
+   *             oldPassword: Aa123123!
+   *             newPassword: Aa123123@
+   *     responses:
+   *       200:
+   *         description: Update success.
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/ResponseSuccess'
+   *             example:
+   *               status: success
+   *               data: null
+   *       400:
+   *         description: Fail for some reason.
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/ResponseFail'
+   *             examples:
+   *               InvalidOldPassword:
+   *                 value:
+   *                   status: fail
+   *                   data:
+   *                     oldPassword: Invalid
+   *               InvalidNewPassword:
+   *                 value:
+   *                   status: fail
+   *                   data:
+   *                     newPassword: Invalid
+   *       401:
+   *         description: Current session is unauthorized.
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/ResponseFail'
+   *             example:
+   *               status: fail
+   *               data:
+   *                 session: Unauthorized
+   *       503:
+   *         description: Server issues.
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/ResponseError'
+   *             examples:
+   *               DatabaseError:
+   *                 value:
+   *                   status: error
+   *                   message: DatabaseError
+   */
   router.put(
       '/api/users/current/password',
       userController.ensureAuthenticated,
