@@ -138,6 +138,28 @@ module.exports = (router, passport) => {
     failureRedirect: '/',
   }));
 
+  /**
+   * @openapi
+   * /auth/facebook:
+   *   post:
+   *     tags:
+   *     - auth
+   *     summary: "Sign in with facebook strategy"
+   *     security: []
+   *     responses:
+   *       200:
+   *         description: >
+   *           Login success. Redirect to dashboard page.<br>
+   *           Save account into databse automatically
+   *           if this account doesn't exist in databse.<br>
+   *           The session ID is returned in a cookie named `connect.sid`.<br>
+   *           You need to include this cookie in subsequent requests.
+   *         headers:
+   *           Set-Cookie:
+   *             schema:
+   *               type: string
+   *               example: connect.sid=abcde12345;
+   */
   router.get('/auth/facebook', passport.authenticate('facebook', {
     scope: ['email'],
   }));
