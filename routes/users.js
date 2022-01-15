@@ -84,6 +84,38 @@ module.exports = (router, passport) => {
       userController.signUp,
   );
 
+  /**
+   * @openapi
+   * /api/users/current/info:
+   *   get:
+   *     tags:
+   *     - user
+   *     summary: Get current user info
+   *     security:
+   *       - cookieAuth: []
+   *     responses:
+   *       200:
+   *         description: Sign up success.
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/ResponseSuccess'
+   *             example:
+   *               status: success
+   *               data:
+   *                 username: Test123
+   *                 emailAddress: test@test.com
+   *       401:
+   *         description: Current session is unauthorized.
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/ResponseFail'
+   *             example:
+   *               status: fail
+   *               data:
+   *                 session: Unauthorized
+   */
   router.get(
       '/api/users/current/info',
       userController.ensureAuthenticated,
