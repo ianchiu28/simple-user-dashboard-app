@@ -5,7 +5,7 @@ module.exports = (router, passport) => {
    *   post:
    *     tags:
    *     - auth
-   *     summary: "Sign in with local strategy"
+   *     summary: Sign in with local strategy
    *     security: []
    *     requestBody:
    *       description: Enter email address and password that registered before
@@ -113,7 +113,7 @@ module.exports = (router, passport) => {
    *   get:
    *     tags:
    *     - auth
-   *     summary: "Sign in with google strategy"
+   *     summary: Sign in with google strategy
    *     security: []
    *     responses:
    *       200:
@@ -144,7 +144,7 @@ module.exports = (router, passport) => {
    *   get:
    *     tags:
    *     - auth
-   *     summary: "Sign in with facebook strategy"
+   *     summary: Sign in with facebook strategy
    *     security: []
    *     responses:
    *       200:
@@ -169,6 +169,18 @@ module.exports = (router, passport) => {
     failureRedirect: '/',
   }));
 
+  /**
+   * @openapi
+   * /auth/signout:
+   *   get:
+   *     tags:
+   *     - auth
+   *     summary: Sign out and clear the user session
+   *     security: []
+   *     responses:
+   *       200:
+   *         description: Sign out success. Redirect to login page.
+   */
   router.get('/auth/signout', (req, res) => {
     req.logout();
     res.redirect('/');
