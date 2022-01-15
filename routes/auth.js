@@ -20,8 +20,8 @@ module.exports = (router, passport) => {
    *     responses:
    *       200:
    *         description: >
-   *           Login success.
-   *           The session ID is returned in a cookie named `connect.sid`.
+   *           Login success.<br>
+   *           The session ID is returned in a cookie named `connect.sid`.<br>
    *           You need to include this cookie in subsequent requests.
    *         headers:
    *           Set-Cookie:
@@ -107,6 +107,28 @@ module.exports = (router, passport) => {
     })(req, res, next);
   });
 
+  /**
+   * @openapi
+   * /auth/google:
+   *   post:
+   *     tags:
+   *     - auth
+   *     summary: "Sign in with google strategy"
+   *     security: []
+   *     responses:
+   *       200:
+   *         description: >
+   *           Login success. Redirect to dashboard page.<br>
+   *           Save account into databse automatically
+   *           if this account doesn't exist in databse.<br>
+   *           The session ID is returned in a cookie named `connect.sid`.<br>
+   *           You need to include this cookie in subsequent requests.
+   *         headers:
+   *           Set-Cookie:
+   *             schema:
+   *               type: string
+   *               example: connect.sid=abcde12345;
+   */
   router.get('/auth/google', passport.authenticate('google', {
     scope: ['profile', 'email'],
   }));
