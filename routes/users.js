@@ -95,7 +95,7 @@ module.exports = (router, passport) => {
    *       - cookieAuth: []
    *     responses:
    *       200:
-   *         description: Sign up success.
+   *         description: Return user name and email address.
    *         content:
    *           application/json:
    *             schema:
@@ -415,14 +415,15 @@ module.exports = (router, passport) => {
    *               status: success
    *               data:
    *                 draw: 1
-   *                 recordsTotal: 15
-   *                 recordsFiltered: 15
+   *                 recordsTotal: 1
+   *                 recordsFiltered: 1
    *                 data:
-   *                   - emailAddress: test@test.com
-   *                     username: Test123
-   *                     signUpTimestamp: 2022-01-01T01:02:03.000Z
-   *                     loginTimes: 10
-   *                     sessionTimestamp: 2022-01-01T01:02:03.000Z
+   *                   -
+   *                     - test@test.com
+   *                     - Test123
+   *                     - 2022-01-01T01:02:03.000Z
+   *                     - 10
+   *                     - 2022-01-01T01:02:03.000Z
    *       401:
    *         description: Current session is unauthorized.
    *         content:

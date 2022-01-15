@@ -16,7 +16,7 @@ module.exports = (router, passport) => {
    *             $ref: '#/components/schemas/User'
    *           example:
    *             emailAddress: test@test.com
-   *             password: Aa123123!
+   *             password: Aa123123+
    *     responses:
    *       200:
    *         description: >
