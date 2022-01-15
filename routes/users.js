@@ -451,6 +451,52 @@ module.exports = (router, passport) => {
       userController.listUsers,
   );
 
+  /**
+   * @openapi
+   * /api/users/statistics:
+   *   get:
+   *     tags:
+   *     - user
+   *     summary: Get user statistics for dashboard
+   *     security:
+   *       - cookieAuth: []
+   *     responses:
+   *       200:
+   *         description: >
+   *           Return total users, active users today,
+   *           and average active user in 7 days.
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/ResponseSuccess'
+   *             example:
+   *               status: success
+   *               data:
+   *                 total: 16
+   *                 activeUsers: 3
+   *                 activeUsers7days: 2
+   *       401:
+   *         description: Current session is unauthorized.
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/ResponseFail'
+   *             example:
+   *               status: fail
+   *               data:
+   *                 session: Unauthorized
+   *       503:
+   *         description: Server issues.
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/ResponseError'
+   *             examples:
+   *               DatabaseError:
+   *                 value:
+   *                   status: error
+   *                   message: DatabaseError
+   */
   router.get(
       '/api/users/statistics',
       userController.ensureAuthenticated,
