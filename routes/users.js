@@ -303,6 +303,71 @@ module.exports = (router, passport) => {
       userController.verifyUser,
   );
 
+  /**
+   * @openapi
+   * /api/users/verify/resend:
+   *   post:
+   *     tags:
+   *     - user
+   *     summary: Resend verification mail.
+   *     security: []
+   *     requestBody:
+   *       description: enter email address
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             $ref: '#/components/schemas/User'
+   *           example:
+   *             emailAddress: test@test.com
+   *     responses:
+   *       200:
+   *         description: Resend up success.
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/ResponseSuccess'
+   *             example:
+   *               status: success
+   *               data: null
+   *       400:
+   *         description: Sign up fail for some reason.
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/ResponseFail'
+   *             examples:
+   *               InvalidEmailAddress:
+   *                 value:
+   *                   status: fail
+   *                   data:
+   *                     emailAddress: Invalid
+   *               EmailAddressNotExisted:
+   *                 value:
+   *                   status: fail
+   *                   data:
+   *                     emailAddress: NotExisted
+   *               AlreadyVerified:
+   *                 value:
+   *                   status: fail
+   *                   data:
+   *                     verified: true
+   *       503:
+   *         description: Server issues.
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/ResponseError'
+   *             examples:
+   *               DatabaseError:
+   *                 value:
+   *                   status: error
+   *                   message: DatabaseError
+   *               EmailServiceError:
+   *                 value:
+   *                   status: error
+   *                   message: EmailServiceError
+   */
   router.post(
       '/api/users/verify/resend',
       userController.resendVerificationMail,
