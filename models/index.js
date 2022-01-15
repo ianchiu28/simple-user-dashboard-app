@@ -23,3 +23,33 @@ exports.User = require('./users')(sequelize, DataTypes);
  * Statistic Model
  */
 exports.Statistic = require('./statistics')(sequelize, DataTypes);
+
+/**
+ * @openapi
+ * components:
+ *   schemas:
+ *     ResponseSuccess:
+ *       type: object
+ *       properties:
+ *         status:
+ *           type: string
+ *           example: success
+ *         data:
+ *           type: object
+ *     ResponseFail:
+ *       type: object
+ *       properties:
+ *         status:
+ *           type: string
+ *           example: fail
+ *         data:
+ *           type: object
+ *     ResponseError:
+ *       type: object
+ *       properties:
+ *         status:
+ *           type: string
+ *           example: error
+ *         message:
+ *           type: string
+ */
