@@ -1,4 +1,63 @@
 module.exports = (router, passport) => {
+  /**
+   * @openapi
+   * /auth/local:
+   *   post:
+   *     tags:
+   *     - auth
+   *     summary: "Sign in with local strategy"
+   *     requestBody:
+   *       description: Enter email address and password that registered before
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             $ref: '#/components/schemas/User'
+   *           example:
+   *             emailAddress: test@test.com
+   *             password: Aa123123!
+   *     responses:
+   *       200:
+   *         description: Login success
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/ResponseSuccess'
+   *             example:
+   *               status: success
+   *               data: null
+   *       400:
+   *         description: Login fail for some reason
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/ResponseFail'
+   *             examples:
+   *               InvalidEmailAddress:
+   *                 value:
+   *                   status: fail
+   *                   data:
+   *                     auth: InvalidEmailAddress
+   *               InvalidPassword:
+   *                 value:
+   *                   status: fail
+   *                   data:
+   *                     auth: InvalidPassword
+   *               NotVerified:
+   *                 value:
+   *                   status: fail
+   *                   data:
+   *                     auth: NotVerified
+   *       503:
+   *         description: Server issues
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/ResponseError'
+   *             example:
+   *               status: error
+   *               message: ServerError
+   */
   router.post('/auth/local', (req, res, next) => {
     passport.authenticate('local', (err, user, info) => {
       // error
