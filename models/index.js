@@ -52,4 +52,9 @@ exports.Statistic = require('./statistics')(sequelize, DataTypes);
  *           example: error
  *         message:
  *           type: string
+ *   securitySchemes:
+ *     cookieAuth:
+ *       type: apiKey
+ *       in: cookie
+ *       name: connect.sid
  */

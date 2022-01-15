@@ -6,6 +6,7 @@ module.exports = (router, passport) => {
    *     tags:
    *     - auth
    *     summary: "Sign in with local strategy"
+   *     security: []
    *     requestBody:
    *       description: Enter email address and password that registered before
    *       required: true
@@ -18,7 +19,15 @@ module.exports = (router, passport) => {
    *             password: Aa123123!
    *     responses:
    *       200:
-   *         description: Login success
+   *         description: >
+   *           Login success.
+   *           The session ID is returned in a cookie named `connect.sid`.
+   *           You need to include this cookie in subsequent requests.
+   *         headers:
+   *           Set-Cookie:
+   *             schema:
+   *               type: string
+   *               example: connect.sid=abcde12345;
    *         content:
    *           application/json:
    *             schema:
@@ -27,7 +36,7 @@ module.exports = (router, passport) => {
    *               status: success
    *               data: null
    *       400:
-   *         description: Login fail for some reason
+   *         description: Login fail for some reason.
    *         content:
    *           application/json:
    *             schema:
@@ -49,7 +58,7 @@ module.exports = (router, passport) => {
    *                   data:
    *                     auth: NotVerified
    *       503:
-   *         description: Server issues
+   *         description: Server issues.
    *         content:
    *           application/json:
    *             schema:
