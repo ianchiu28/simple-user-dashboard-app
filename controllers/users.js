@@ -47,7 +47,7 @@ exports.signUp = async (req, res) => {
   // check if email address existed
   let user;
   try {
-    user = await User.findOne({where: {providerId: emailAddress}});
+    user = await userService.getUser(emailAddress);
   } catch (err) {
     console.log(err);
     res.status(503).json({
@@ -69,19 +69,14 @@ exports.signUp = async (req, res) => {
   }
 
   // not existed, create a new one
-  const verifiedToken = crypto.randomBytes(20).toString('hex');
+  const verifiedToken = userService.generateVerifiedToken();
   try {
-    user = await User.create({
-      providerId: emailAddress,
-      provider: 'local',
-      emailAddress,
-      password: User.hashPassword(password),
-      username,
-      verified: 0,
-      verifiedToken,
-      signUpTimestamp: new Date().toISOString(),
-      loginTimes: 0,
-    });
+    user = await userService.createUser(
+        emailAddress,
+        password,
+        username,
+        verifiedToken,
+    );
   } catch (err) {
     console.log(err);
     res.status(503).json({

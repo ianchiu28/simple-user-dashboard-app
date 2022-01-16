@@ -1,4 +1,5 @@
 const nodemailer = require('nodemailer');
+const crypto = require('crypto');
 const {User} = require('../models');
 
 // gmail server setting
@@ -94,5 +95,44 @@ exports.updateSessionTimestamp = (user) => {
     sessionTimestamp: new Date().toISOString(),
   }, {
     where: {providerId: user.providerId},
+  });
+};
+
+/**
+ * Get user by provider id
+ * @param {string} providerId
+ * @return {Promise<getUser>} get user async function
+ */
+exports.getUser = (providerId) => {
+  return User.findOne({where: {providerId}});
+};
+
+/**
+ * Generate a verified token
+ * @return {string} verified token
+ */
+exports.generateVerifiedToken = () => {
+  return crypto.randomBytes(20).toString('hex');
+};
+
+/**
+ * Create a new user
+ * @param {string} emailAddress
+ * @param {string} password
+ * @param {string} username
+ * @param {string} verifiedToken
+ * @return {Promise<createUser>} create user async function
+ */
+exports.createUser = (emailAddress, password, username, verifiedToken) => {
+  return User.create({
+    providerId: emailAddress,
+    provider: 'local',
+    emailAddress,
+    password: User.hashPassword(password),
+    username,
+    verified: 0,
+    verifiedToken,
+    signUpTimestamp: new Date().toISOString(),
+    loginTimes: 0,
   });
 };
