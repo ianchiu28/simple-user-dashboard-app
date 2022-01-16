@@ -266,9 +266,14 @@ exports.verifyUser = async (req, res) => {
     return res.redirect('/verifyError');
   }
 
-  // update user status: set verified to true and remove verifiedToken
+  // update user status:
+  // set verified to true, remove verifiedToken, and increase login times
   try {
-    await User.update({verified: 1, verifiedToken: null}, {
+    await User.update({
+      verified: 1,
+      verifiedToken: null,
+      loginTimes: user.loginTimes + 1,
+    }, {
       where: {
         providerId: user.providerId,
       },
