@@ -1,6 +1,7 @@
 const userController = require('../controllers/users');
 
 module.exports = (router, passport) => {
+  // #region APIDOC
   /**
    * @openapi
    * /api/users/{emailAddress}:
@@ -79,11 +80,13 @@ module.exports = (router, passport) => {
    *                   status: error
    *                   message: EmailServiceError
    */
+  // #endregion
   router.post(
       '/api/users/:emailAddress',
       userController.signUp,
   );
 
+  // #region APIDOC
   /**
    * @openapi
    * /api/users/current/info:
@@ -116,12 +119,14 @@ module.exports = (router, passport) => {
    *               data:
    *                 session: Unauthorized
    */
+  // #endregion
   router.get(
       '/api/users/current/info',
       userController.ensureAuthenticated,
       userController.getUserInfo,
   );
 
+  // #region APIDOC
   /**
    * @openapi
    * /api/users/current/info:
@@ -180,12 +185,14 @@ module.exports = (router, passport) => {
    *               status: error
    *               message: DatabaseError
    */
+  // #endregion
   router.put(
       '/api/users/current/info',
       userController.ensureAuthenticated,
       userController.updateUserInfo,
   );
 
+  // #region APIDOC
   /**
    * @openapi
    * /api/users/current/password:
@@ -252,12 +259,14 @@ module.exports = (router, passport) => {
    *               status: error
    *               message: DatabaseError
    */
+  // #endregion
   router.put(
       '/api/users/current/password',
       userController.ensureAuthenticated,
       userController.updateUserPassword,
   );
 
+  // #region APIDOC
   /**
    * @openapi
    * /api/users/verify:
@@ -290,11 +299,13 @@ module.exports = (router, passport) => {
    *               status: error
    *               message: DatabaseError
    */
+  // #endregion
   router.get(
       '/api/users/verify',
       userController.verifyUser,
   );
 
+  // #region APIDOC
   /**
    * @openapi
    * /api/users/verify/resend:
@@ -360,11 +371,13 @@ module.exports = (router, passport) => {
    *                   status: error
    *                   message: EmailServiceError
    */
+  // #endregion
   router.post(
       '/api/users/verify/resend',
       userController.resendVerificationMail,
   );
 
+  // #region APIDOC
   /**
    * @openapi
    * /api/users:
@@ -436,12 +449,14 @@ module.exports = (router, passport) => {
    *               status: error
    *               message: DatabaseError
    */
+  // #endregion
   router.get(
       '/api/users',
       userController.ensureAuthenticated,
       userController.listUsers,
   );
 
+  // #region APIDOC
   /**
    * @openapi
    * /api/users/statistics:
@@ -486,6 +501,7 @@ module.exports = (router, passport) => {
    *               status: error
    *               message: DatabaseError
    */
+  // #endregion
   router.get(
       '/api/users/statistics',
       userController.ensureAuthenticated,

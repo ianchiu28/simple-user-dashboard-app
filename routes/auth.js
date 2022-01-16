@@ -1,4 +1,5 @@
 module.exports = (router, passport) => {
+  // #region APIDOC
   /**
    * @openapi
    * /auth/local:
@@ -67,6 +68,7 @@ module.exports = (router, passport) => {
    *               status: error
    *               message: ServerError
    */
+  // #endregion
   router.post('/auth/local', (req, res, next) => {
     passport.authenticate('local', (err, user, info) => {
       // error
@@ -107,6 +109,7 @@ module.exports = (router, passport) => {
     })(req, res, next);
   });
 
+  // #region APIDOC
   /**
    * @openapi
    * /auth/google:
@@ -129,6 +132,7 @@ module.exports = (router, passport) => {
    *               type: string
    *               example: connect.sid=abcde12345;
    */
+  // #endregion
   router.get('/auth/google', passport.authenticate('google', {
     scope: ['profile', 'email'],
   }));
@@ -138,6 +142,7 @@ module.exports = (router, passport) => {
     failureRedirect: '/',
   }));
 
+  // #region APIDOC
   /**
    * @openapi
    * /auth/facebook:
@@ -160,6 +165,7 @@ module.exports = (router, passport) => {
    *               type: string
    *               example: connect.sid=abcde12345;
    */
+  // #endregion
   router.get('/auth/facebook', passport.authenticate('facebook', {
     scope: ['email'],
   }));
@@ -169,6 +175,7 @@ module.exports = (router, passport) => {
     failureRedirect: '/',
   }));
 
+  // #region APIDOC
   /**
    * @openapi
    * /auth/signout:
@@ -181,6 +188,7 @@ module.exports = (router, passport) => {
    *       200:
    *         description: Sign out success. Redirect to login page.
    */
+  // #endregion
   router.get('/auth/signout', (req, res) => {
     req.logout();
     res.redirect('/');
