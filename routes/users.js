@@ -151,17 +151,15 @@ module.exports = (router, passport) => {
    *               status: success
    *               data: null
    *       400:
-   *         description: Fail for some reason.
+   *         description: Fail for invalid user name.
    *         content:
    *           application/json:
    *             schema:
    *               $ref: '#/components/schemas/ResponseFail'
-   *             examples:
-   *               InvalidUserName:
-   *                 value:
-   *                   status: fail
-   *                   data:
-   *                     username: Invalid
+   *             example:
+   *               status: fail
+   *               data:
+   *                 username: Invalid
    *       401:
    *         description: Current session is unauthorized.
    *         content:
@@ -178,11 +176,9 @@ module.exports = (router, passport) => {
    *           application/json:
    *             schema:
    *               $ref: '#/components/schemas/ResponseError'
-   *             examples:
-   *               DatabaseError:
-   *                 value:
-   *                   status: error
-   *                   message: DatabaseError
+   *             example:
+   *               status: error
+   *               message: DatabaseError
    */
   router.put(
       '/api/users/current/info',
@@ -252,11 +248,9 @@ module.exports = (router, passport) => {
    *           application/json:
    *             schema:
    *               $ref: '#/components/schemas/ResponseError'
-   *             examples:
-   *               DatabaseError:
-   *                 value:
-   *                   status: error
-   *                   message: DatabaseError
+   *             example:
+   *               status: error
+   *               message: DatabaseError
    */
   router.put(
       '/api/users/current/password',
@@ -292,11 +286,9 @@ module.exports = (router, passport) => {
    *           application/json:
    *             schema:
    *               $ref: '#/components/schemas/ResponseError'
-   *             examples:
-   *               DatabaseError:
-   *                 value:
-   *                   status: error
-   *                   message: DatabaseError
+   *             example:
+   *               status: error
+   *               message: DatabaseError
    */
   router.get(
       '/api/users/verify',
@@ -440,11 +432,9 @@ module.exports = (router, passport) => {
    *           application/json:
    *             schema:
    *               $ref: '#/components/schemas/ResponseError'
-   *             examples:
-   *               DatabaseError:
-   *                 value:
-   *                   status: error
-   *                   message: DatabaseError
+   *             example:
+   *               status: error
+   *               message: DatabaseError
    */
   router.get(
       '/api/users',
@@ -492,11 +482,9 @@ module.exports = (router, passport) => {
    *           application/json:
    *             schema:
    *               $ref: '#/components/schemas/ResponseError'
-   *             examples:
-   *               DatabaseError:
-   *                 value:
-   *                   status: error
-   *                   message: DatabaseError
+   *             example:
+   *               status: error
+   *               message: DatabaseError
    */
   router.get(
       '/api/users/statistics',
