@@ -302,7 +302,7 @@ exports.resendVerificationMail = async (req, res) => {
   // check if email address existed and its verified status
   let user;
   try {
-    user = await User.findOne({where: {providerId: emailAddress}});
+    user = await userService.getUser(emailAddress);
   } catch (err) {
     console.log(err);
     res.status(503).json({
@@ -336,11 +336,7 @@ exports.resendVerificationMail = async (req, res) => {
   // update verified token
   const verifiedToken = crypto.randomBytes(20).toString('hex');
   try {
-    await User.update({verifiedToken}, {
-      where: {
-        providerId: user.providerId,
-      },
-    });
+    await userService.updateUser(user.providerId, {verifiedToken});
   } catch (err) {
     console.log(err);
     res.status(503).json({
