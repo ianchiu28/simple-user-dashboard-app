@@ -108,6 +108,15 @@ exports.getUser = (providerId) => {
 };
 
 /**
+ * Get user by verified token
+ * @param {string} verifiedToken
+ * @return {Promise<getUser>} get user async function
+ */
+exports.getUserByToken = (verifiedToken) => {
+  return User.findOne({where: {verifiedToken}});
+};
+
+/**
  * Generate a verified token
  * @return {string} verified token
  */

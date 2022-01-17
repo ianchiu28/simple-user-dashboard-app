@@ -239,7 +239,7 @@ exports.verifyUser = async (req, res) => {
   // find user by token
   let user;
   try {
-    user = await User.findOne({where: {verifiedToken: token}});
+    user = await userService.getUserByToken(token);
   } catch (err) {
     console.log(err);
     res.status(503).json({
@@ -257,14 +257,10 @@ exports.verifyUser = async (req, res) => {
   // update user status:
   // set verified to true, remove verifiedToken, and increase login times
   try {
-    await User.update({
+    await userService.updateUser(user.providerId, {
       verified: 1,
       verifiedToken: null,
       loginTimes: user.loginTimes + 1,
-    }, {
-      where: {
-        providerId: user.providerId,
-      },
     });
   } catch (err) {
     console.log(err);
