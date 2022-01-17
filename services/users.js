@@ -136,3 +136,17 @@ exports.createUser = (emailAddress, password, username, verifiedToken) => {
     loginTimes: 0,
   });
 };
+
+/**
+ * Update user
+ * @param {string} providerId
+ * @param {object} updateObject properties to update
+ * @return {Promise<updateUser>} update user async function
+ */
+exports.updateUser = (providerId, updateObject) => {
+  return User.update(updateObject, {
+    where: {
+      providerId,
+    },
+  });
+};

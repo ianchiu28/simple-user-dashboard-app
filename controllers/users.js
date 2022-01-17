@@ -162,11 +162,7 @@ exports.updateUserInfo = async (req, res) => {
 
   // update user info
   try {
-    await User.update({username: newUsername}, {
-      where: {
-        providerId,
-      },
-    });
+    await userService.updateUser(providerId, {username: newUsername});
   } catch (err) {
     console.log(err);
     res.status(503).json({
@@ -214,12 +210,9 @@ exports.updateUserPassword = async (req, res) => {
   }
 
   // update user info
+  const hashedPassword = User.hashPassword(newPassword);
   try {
-    await User.update({password: User.hashPassword(newPassword)}, {
-      where: {
-        providerId,
-      },
-    });
+    await userService.updateUser(providerId, {password: hashedPassword});
   } catch (err) {
     console.log(err);
     res.status(503).json({
