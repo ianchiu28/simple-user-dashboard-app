@@ -2,7 +2,6 @@ const LocalStrategy = require('passport-local').Strategy;
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const FacebookStrategy = require('passport-facebook').Strategy;
 
-const {User} = require('../models');
 const userService = require('../services/users');
 
 module.exports = (passport) => {
@@ -129,8 +128,8 @@ module.exports = (passport) => {
    * Find user by primary key(providerId)
    */
   passport.deserializeUser((providerId, done) => {
-    User
-        .findByPk(providerId)
+    userService
+        .getUser(providerId)
         .then((user) => done(null, user))
         .catch((err) => done(err));
   });
