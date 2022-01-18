@@ -140,7 +140,7 @@ exports.createUser = (emailAddress, password, username, verifiedToken) => {
     providerId: emailAddress,
     provider: 'local',
     emailAddress,
-    password: User.hashPassword(password),
+    password: bcrypt.hashSync(password, 10),
     username,
     verified: 0,
     verifiedToken,
