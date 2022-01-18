@@ -1,7 +1,6 @@
 const crypto = require('crypto');
-const {Op} = require('sequelize');
 
-const {User, Statistic} = require('../models');
+const {User} = require('../models');
 const userService = require('../services/users');
 
 /**
@@ -375,7 +374,7 @@ exports.listUsers = async (req, res) => {
   // get total count
   let recordsTotal;
   try {
-    recordsTotal = await User.count();
+    recordsTotal = await userService.getTotalCount();
   } catch (err) {
     console.log(err);
     res.status(503).json({
@@ -388,20 +387,7 @@ exports.listUsers = async (req, res) => {
   // get users
   let users;
   try {
-    users = await User.findAll({
-      attributes: [
-        'emailAddress',
-        'username',
-        'signUpTimestamp',
-        'loginTimes',
-        'sessionTimestamp',
-      ],
-      order: [
-        ['emailAddress', 'ASC'],
-      ],
-      offset: start,
-      limit: length,
-    });
+    users = await userService.listUsers(start, length);
   } catch (err) {
     console.log(err);
     res.status(503).json({
@@ -439,7 +425,7 @@ exports.getUsersStatistics = async (req, res) => {
   // get total count
   let total;
   try {
-    total = await User.count();
+    total = await userService.getTotalCount();
   } catch (err) {
     console.log(err);
     res.status(503).json({
@@ -450,22 +436,9 @@ exports.getUsersStatistics = async (req, res) => {
   }
 
   // get active users today
-  const today = new Date();
-  today.setUTCHours(0, 0, 0, 0);
-
-  const tomorrow = new Date();
-  tomorrow.setUTCDate(tomorrow.getUTCDate() + 1);
-  tomorrow.setUTCHours(0, 0, 0, 0);
-
   let activeUsers;
   try {
-    activeUsers = await User.count({
-      where: {
-        sessionTimestamp: {
-          [Op.between]: [today, tomorrow],
-        },
-      },
-    });
+    activeUsers = await userService.getActiveCount();
   } catch (err) {
     console.log(err);
     res.status(503).json({
@@ -476,14 +449,9 @@ exports.getUsersStatistics = async (req, res) => {
   }
 
   // get active users in 7 days, then calculate the average
-  let lastSixRecord;
+  let activeUsers7days;
   try {
-    lastSixRecord = await Statistic.findAll({
-      order: [
-        ['date', 'DESC'],
-      ],
-      limit: 6,
-    });
+    activeUsers7days = userService.getActiveAverage(activeUsers);
   } catch (err) {
     console.log(err);
     res.status(503).json({
@@ -492,10 +460,6 @@ exports.getUsersStatistics = async (req, res) => {
     });
     return;
   }
-  const sum = lastSixRecord.reduce((pre, cur) => {
-    return pre + cur.dataValues.activeUser;
-  }, activeUsers);
-  const activeUsers7days = Math.round(sum / 7);
 
   res.json({
     status: 'success',

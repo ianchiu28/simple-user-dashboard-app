@@ -1,6 +1,8 @@
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
-const {User} = require('../models');
+const {Op} = require('sequelize');
+
+const {User, Statistic} = require('../models');
 
 // gmail server setting
 const mailTransport = nodemailer.createTransport({
@@ -158,4 +160,75 @@ exports.updateUser = (providerId, updateObject) => {
       providerId,
     },
   });
+};
+
+/**
+ * Get total user count
+ * @return {Promise<getTotalCount>} get total count async function
+ */
+exports.getTotalCount = () => {
+  return User.count();
+};
+
+/**
+ * List users
+ * @param {number} offset the offset of items to skip
+ * @param {number} limit the numbers of items to return
+ * @return {Promise<listUsers>} list users async function
+ */
+exports.listUsers = (offset, limit) => {
+  return User.findAll({
+    attributes: [
+      'emailAddress',
+      'username',
+      'signUpTimestamp',
+      'loginTimes',
+      'sessionTimestamp',
+    ],
+    order: [
+      ['emailAddress', 'ASC'],
+    ],
+    offset,
+    limit,
+  });
+};
+
+/**
+ * Get today's active users count
+ * @return {Promise<getActiveCount>} get active count async function
+ */
+exports.getActiveCount = () => {
+  const today = new Date();
+  today.setUTCHours(0, 0, 0, 0);
+
+  const tomorrow = new Date();
+  tomorrow.setUTCDate(tomorrow.getUTCDate() + 1);
+  tomorrow.setUTCHours(0, 0, 0, 0);
+
+  return User.count({
+    where: {
+      sessionTimestamp: {
+        [Op.between]: [today, tomorrow],
+      },
+    },
+  });
+};
+
+/**
+ * Get active users in 7 days, then calculate the average
+ * @param {number} activeUsers active user count today
+ * @return {Promise<getActiveAverage>} get active average async function
+ */
+exports.getActiveAverage = async (activeUsers) => {
+  const lastSixRecord = await Statistic.findAll({
+    order: [
+      ['date', 'DESC'],
+    ],
+    limit: 6,
+  });
+
+  const sum = lastSixRecord.reduce((pre, cur) => {
+    return pre + cur.dataValues.activeUser;
+  }, activeUsers);
+  return Math.round(sum / 7);
 };
