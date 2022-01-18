@@ -57,7 +57,7 @@ module.exports = (passport) => {
 
     // check if email address existed
     userService
-        .getUser(emailAddress)
+        .getUser(providerId)
         .then((user)=>{
           // existed, login
           if (user) {
@@ -94,7 +94,7 @@ module.exports = (passport) => {
 
     // check if email address existed
     userService
-        .getUser(emailAddress)
+        .getUser(providerId)
         .then((user)=>{
           // existed, login
           if (user) {
