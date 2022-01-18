@@ -448,7 +448,7 @@ exports.getUsersStatistics = async (req, res) => {
   // get active users in 7 days, then calculate the average
   let activeUsers7days;
   try {
-    activeUsers7days = userService.getActiveAverage(activeUsers);
+    activeUsers7days = await userService.getActiveAverage(activeUsers);
   } catch (err) {
     console.log(err);
     res.status(503).json({
