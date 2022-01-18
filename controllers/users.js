@@ -1,4 +1,3 @@
-const {User} = require('../models');
 const userService = require('../services/users');
 
 /**
@@ -196,7 +195,7 @@ exports.updateUserPassword = async (req, res) => {
   }
 
   // check old password
-  if (!User.comparePassword(oldPassword, password)) {
+  if (!userService.comparePassword(oldPassword, password)) {
     res.status(400).json({
       status: 'fail',
       data: {
@@ -207,7 +206,7 @@ exports.updateUserPassword = async (req, res) => {
   }
 
   // update user info
-  const hashedPassword = User.hashPassword(newPassword);
+  const hashedPassword = userService.hashPassword(newPassword);
   try {
     await userService.updateUser(providerId, {password: hashedPassword});
   } catch (err) {

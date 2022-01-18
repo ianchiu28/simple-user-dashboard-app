@@ -1,5 +1,6 @@
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
+const bcrypt = require('bcrypt');
 const {Op} = require('sequelize');
 
 const {User, Statistic} = require('../models');
@@ -231,4 +232,21 @@ exports.getActiveAverage = async (activeUsers) => {
     return pre + cur.dataValues.activeUser;
   }, activeUsers);
   return Math.round(sum / 7);
+};
+
+/**
+ * Hashing the password.
+ * @param {string} password
+ * @return {string} encrypted password
+ */
+exports.hashPassword = (password) => bcrypt.hashSync(password, 10);
+
+/**
+ * Check if the password match tje encrypted password.
+ * @param {string} password
+ * @param {string} encrypted
+ * @return {boolean} match or not
+ */
+exports.comparePassword = (password, encrypted) => {
+  return bcrypt.compareSync(password, encrypted);
 };
