@@ -3,6 +3,7 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const FacebookStrategy = require('passport-facebook').Strategy;
 
 const {User} = require('../models');
+const userService = require('../services/users');
 
 module.exports = (passport) => {
   /**
@@ -13,11 +14,9 @@ module.exports = (passport) => {
     usernameField: 'emailAddress',
     passwordField: 'password',
   }, (emailAddress, password, done) => {
-    const providerId = emailAddress;
-
     // check if email address existed
-    User
-        .findOne({where: {providerId}})
+    userService
+        .getUser(emailAddress)
         .then((user)=> {
           // not existed
           if (!user) {
@@ -25,7 +24,7 @@ module.exports = (passport) => {
           }
 
           // invalid password
-          if (!User.comparePassword(password, user.password)) {
+          if (!userService.comparePassword(password, user.password)) {
             return done(null, false, 'InvalidPassword');
           }
 
@@ -35,12 +34,8 @@ module.exports = (passport) => {
           }
 
           // increase login times
-          User
-              .update({loginTimes: user.loginTimes + 1}, {
-                where: {
-                  providerId: user.providerId,
-                },
-              })
+          userService
+              .updateUser(user.providerId, {loginTimes: user.loginTimes + 1})
               .then(() => done(null, user))
               .catch((err) => done(err));
         })
@@ -62,34 +57,22 @@ module.exports = (passport) => {
     const username = profile.displayName;
 
     // check if email address existed
-    User
-        .findOne({where: {providerId}})
+    userService
+        .getUser(emailAddress)
         .then((user)=>{
           // existed, login
           if (user) {
             // increase login times
-            User
-                .update({loginTimes: user.loginTimes + 1}, {
-                  where: {
-                    providerId: user.providerId,
-                  },
-                })
+            userService
+                .updateUser(user.providerId, {loginTimes: user.loginTimes + 1})
                 .then(() => done(null, user))
                 .catch((err) => done(err));
             return;
           }
 
           // not existed, create a new one and login
-          User
-              .create({
-                providerId,
-                provider: 'google',
-                emailAddress,
-                username,
-                verified: 1,
-                signUpTimestamp: new Date().toISOString(),
-                loginTimes: 1,
-              })
+          userService
+              .createUserSocial(providerId, 'google', emailAddress, username)
               .then((user) => done(null, user))
               .catch((err) => done(err));
         })
@@ -111,34 +94,22 @@ module.exports = (passport) => {
     const username = profile.displayName;
 
     // check if email address existed
-    User
-        .findOne({where: {providerId}})
+    userService
+        .getUser(emailAddress)
         .then((user)=>{
           // existed, login
           if (user) {
             // increase login times
-            User
-                .update({loginTimes: user.loginTimes + 1}, {
-                  where: {
-                    providerId: user.providerId,
-                  },
-                })
+            userService
+                .updateUser(user.providerId, {loginTimes: user.loginTimes + 1})
                 .then(() => done(null, user))
                 .catch((err) => done(err));
             return;
           }
 
           // not existed, create a new one and login
-          User
-              .create({
-                providerId,
-                provider: 'facebook',
-                emailAddress,
-                username,
-                verified: 1,
-                signUpTimestamp: new Date().toISOString(),
-                loginTimes: 1,
-              })
+          userService
+              .createUserSocial(providerId, 'facebook', emailAddress, username)
               .then((user) => done(null, user))
               .catch((err) => done(err));
         })

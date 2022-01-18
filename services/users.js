@@ -150,6 +150,26 @@ exports.createUser = (emailAddress, password, username, verifiedToken) => {
 };
 
 /**
+ * Create a new user by social media
+ * @param {string} providerId
+ * @param {string} provider
+ * @param {string} emailAddress
+ * @param {string} username
+ * @return {Promise<createUserSocial>} create user social async function
+ */
+exports.createUserSocial = (providerId, provider, emailAddress, username) => {
+  return User.create({
+    providerId,
+    provider,
+    emailAddress,
+    username,
+    verified: 1,
+    signUpTimestamp: new Date().toISOString(),
+    loginTimes: 1,
+  });
+};
+
+/**
  * Update user
  * @param {string} providerId
  * @param {object} updateObject properties to update
