@@ -1,5 +1,3 @@
-const crypto = require('crypto');
-
 const {User} = require('../models');
 const userService = require('../services/users');
 
@@ -333,7 +331,7 @@ exports.resendVerificationMail = async (req, res) => {
   }
 
   // update verified token
-  const verifiedToken = crypto.randomBytes(20).toString('hex');
+  const verifiedToken = userService.generateVerifiedToken();
   try {
     await userService.updateUser(user.providerId, {verifiedToken});
   } catch (err) {
